@@ -19,7 +19,8 @@ public class Visitor {
 		try {
 			stmt = this.conn.prepareStatement("INSERT INTO Visitor "
 										+ "(phone_number) "
-										+ "VALUES (?)");
+										+ "VALUES (?)"
+										);
 			
 			stmt.setString(1, phoneNumber);
 			stmt.executeQuery();

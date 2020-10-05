@@ -19,7 +19,7 @@ public class MainApplication {
 		
 		Scanner sc = new Scanner(System.in);
 		while (true) {
-			System.out.println("Enter a choice.\n 1. Add visitor  Q. Quit");
+			System.out.println("Enter a choice.\n 1. Add visitor  2. Add Lot  Q. Quit");
 			String choice = sc.next();
 			
 			if(choice.equalsIgnoreCase("1")) {
@@ -28,6 +28,19 @@ public class MainApplication {
 				
 				Visitor v = new Visitor(phoneNumber, conn);
 				v.addVisitor();
+			}
+			
+			else if(choice.equalsIgnoreCase("2")) {
+				 System.out.println("Enter name, address, designation, startnum, numspaces");
+				 String name = sc.next();
+				 String address = sc.next();
+				 String designation = sc.next();
+				 int startSpaceNumber = sc.nextInt();
+				 int numSpaces = sc.nextInt();
+				 
+				 Lots lot = new Lots(name, address, designation, startSpaceNumber, numSpaces, conn);
+				 lot.addLot();
+				 
 			}
 			
 			if(choice.equalsIgnoreCase("Q")) {
