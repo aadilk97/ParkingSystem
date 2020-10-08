@@ -17,6 +17,22 @@ public class CreateTables {
 					+ "NumSpaces integer)"
 					);
 			
+			System.out.println("Table created successfully");
+		} catch(SQLException e) {
+			System.out.println("Failed to create table " + e.getMessage());
+		}
+	}
+	
+	public static void createUserTable(Connection conn) {
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.execute("CREATE TABLE Users( "
+					+ "Univid varchar(10) NOT NULL PRIMARY KEY, "
+					+ "Password varchar(20) NOT NULL, "
+					+ "Type varchar(20) NOT NULL)"
+					);
+			
+			System.out.println("Table created successfully");
 		} catch(SQLException e) {
 			System.out.println("Failed to create table " + e.getMessage());
 		}
@@ -27,6 +43,7 @@ public class CreateTables {
 		Connection conn = dbConnection.createConnection();
 		
 //		createLotsTable(conn);
+		createUserTable(conn);
 	
 	}
 	
