@@ -21,6 +21,12 @@ public class User {
 		createUser();
 	}
 	
+	User(String univid, String password, String type){
+		this.univid = univid;
+		this.password = password;
+		this.type = type;
+	}
+	
 	User(Connection conn){
 		this.conn = conn;
 	}
