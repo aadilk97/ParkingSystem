@@ -47,7 +47,7 @@ public class CreateTables {
 					+ "Manufacturer varchar(20),"
 					+ "Model varchar(20),"
 					+ "Color varchar(20),"
-					+ "Year integer(4),"
+					+ "Year varchar(4),"
 					+ "CONSTRAINT pk_visitor PRIMARY KEY (Phone_no, LicensePlate))");
 			System.out.println("Visitor Vehicle Table created successfully");
 		}
@@ -61,7 +61,7 @@ public class CreateTables {
 		Connection conn = dbConnection.createConnection();
 		
 //		createLotsTable(conn);
-		createUserTable(conn);
+//		createUserTable(conn);
 		createVisitorVehicleTable(conn);
 	}
 	
