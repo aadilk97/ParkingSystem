@@ -35,6 +35,13 @@ public class Admin extends User{
 			
 			else if(choice.equalsIgnoreCase("2")) {
 				// Logic for adding new zone to a lot.
+				System.out.println("Enter the lot to which zone has to be assigned");
+				String lot = sc.next();
+				System.out.println("Enter the zone");
+				String zone = sc.next();
+				
+				Lots lotObject = new Lots(lot, conn);
+				lotObject.assignZoneToLot(lot, zone);
 			}
 			
 			else if(choice.equalsIgnoreCase("Q")) {
