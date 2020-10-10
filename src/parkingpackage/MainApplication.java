@@ -115,7 +115,6 @@ public class MainApplication {
 				
 				Vehicle v = new Vehicle(licenseplate, manufacturer,model,color,year,conn);
 				
-//				System.out.println(v);
 				VisitorVehicle vv=new VisitorVehicle(phone,conn,v);
 				
 				vv.addVisitor();
@@ -132,8 +131,6 @@ public class MainApplication {
 				System.out.println("Invalid choice");
 			}
 		}
-	
-
 		sc.close();
 		conn.close();
 		
