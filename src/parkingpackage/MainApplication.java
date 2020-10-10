@@ -111,8 +111,6 @@ public class MainApplication {
 				System.out.println("Invalid choice");
 			}
 		}
-	
-
 		sc.close();
 		conn.close();
 		
