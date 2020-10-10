@@ -100,6 +100,27 @@ public class MainApplication {
 			}
 			
 			else if(role == 4) {
+				System.out.println("Hi Visitor welcome to our Parking Lot!");
+				System.out.println("Please enter a valid contact number without spaces");
+				String phone=sc.next();
+				
+				System.out.println("Enter your car details in the order mentioned below\n\n");
+				System.out.println("License Plate Manufacturer Model Color Year");			
+				
+				String licenseplate=sc.next();
+				String manufacturer=sc.next();
+				String model=sc.next();
+				String color=sc.next();
+				int year=Integer.parseInt(sc.next());
+				
+				Vehicle v = new Vehicle(licenseplate, manufacturer,model,color,year,conn);
+				
+//				System.out.println(v);
+				VisitorVehicle vv=new VisitorVehicle(phone,conn,v);
+				
+				vv.addVisitor();
+				
+				System.out.println("Visitor entry added");
 				
 			}
 			
