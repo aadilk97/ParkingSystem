@@ -4,26 +4,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class VisitorVehicle {
+public class VisitorVehicle extends Vehicle{
 	Connection conn;
 	String phoneNumber;
-	String licenseplate;
-	String manufacturer;
-	String model;
-	String color;
-	int year;
 	
-	VisitorVehicle(String phoneNumber, Connection conn, Vehicle v){
+	VisitorVehicle(String phoneNumber,String licenseplate, String manufacturer, String model,String color,int year, Connection conn){
+		super(licenseplate,manufacturer,model,color,year,conn);
 		this.phoneNumber = phoneNumber;
 		this.conn = conn;
-		this.licenseplate=v.licenseplate;
-		this.manufacturer=v.manufacturer;
-		this.model=v.model;
-		this.color=v.color;
-		this.year=v.year;
 	}
-	
-	
+
 	public void addVisitor() {
 		PreparedStatement stmt;
 		try {

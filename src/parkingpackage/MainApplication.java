@@ -113,10 +113,7 @@ public class MainApplication {
 				String color=sc.next();
 				int year=Integer.parseInt(sc.next());
 				
-				Vehicle v = new Vehicle(licenseplate, manufacturer,model,color,year,conn);
-				
-				VisitorVehicle vv=new VisitorVehicle(phone,conn,v);
-				
+				VisitorVehicle vv=new VisitorVehicle(phone,licenseplate,manufacturer,model,color,year,conn);
 				vv.addVisitor();
 				
 				System.out.println("Visitor entry added");
@@ -131,6 +128,8 @@ public class MainApplication {
 				System.out.println("Invalid choice");
 			}
 		}
+	
+
 		sc.close();
 		conn.close();
 		
