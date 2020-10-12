@@ -24,7 +24,7 @@ public class Visitor {
 			stmt.setString(1, this.phoneNumber);
 			stmt.setString(2, this.licenseNumber);
 			
-			stmt.executeQuery();
+			stmt.executeUpdate();
 			System.out.println("Visitor with license added successfully");
 			
 		} catch(SQLException e) {

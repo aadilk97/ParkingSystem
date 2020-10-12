@@ -43,7 +43,7 @@ public class User {
 			stmt.setString(2, password);
 			stmt.setString(3, type);
 			
-			stmt.executeQuery();
+			stmt.executeUpdate();
 			System.out.println("User created successfully");
 		} catch(SQLException e) {
 			System.out.println("Failed to create user " + e.getMessage());

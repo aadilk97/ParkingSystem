@@ -40,7 +40,7 @@ public class Lots {
 			stmt.setInt(4, startSpaceNumber);
 			stmt.setInt(5, numSpaces);
 			
-			stmt.executeQuery();
+			stmt.executeUpdate();
 			
 			for(int i=startSpaceNumber; i < startSpaceNumber + numSpaces; i++) {
 				Space space = new Space(name, i, designation, conn);
