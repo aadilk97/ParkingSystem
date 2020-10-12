@@ -60,45 +60,80 @@ public class CreateTables {
 	public static void createVehicleTable(Connection conn) {
 		try {
 			Statement stmt=conn.createStatement();
-			stmt.execute("create table Vehicle("
-					+ "Phone_no varchar(10) NOT NULL,"
-					+ "LicensePlate varchar(10) NOT NULL,"
+			stmt.execute("CREATE TABLE Vehicle("
+					+ "LicenseNumber varchar(10) NOT NULL,"
 					+ "Manufacturer varchar(20),"
 					+ "Model varchar(20),"
 					+ "Color varchar(20),"
 					+ "Year varchar(4),"
-					+ "CONSTRAINT pk_visitor PRIMARY KEY (Phone_no, LicensePlate))");
+					+ "CONSTRAINT pk_vehicle PRIMARY KEY (LicenseNumber))"
+				);
 			System.out.println("Vehicle Table created successfully");
 		}
 		catch(SQLException e) {
-			System.out.println("Falied to create table" +e.getMessage());
+			System.out.println("Failed to create table" +e.getMessage());
 		}
 	}
 	
-//	public static void createNonVisitorPermitsTable(Connection conn) {
-//		try {
-//			Statement stmt = conn.createStatement();
-//			stmt.execute("CREATE Table NonvisitorPermits( "
-//					+ "PermitId varchar(8), "
-//					+ "LicenseNumber varchar(10), "
-//					+ "StartDate varchar(15), "
-//					+ "ExpirationDate varchar(15), "
-//					+ "ExpirationTime varchar(15), "
-//					+ "SpaceType varchar(20), "
-//					+ "FOREIGN KEY (Univid) REFERENCES Users(Univid))" 
-//				);
-//			System.out.println("NonVisitor Permits table created successfully");
-//		} catch(SQLException e) {
-//			System.out.println("Failed to create non visitor permits table " + e.getMessage());
-//		}
-//	}
+	public static void createVisitorTable(Connection conn) {
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.execute("CREATE TABLE Visitor( "
+					+ "PhoneNumber varchar(10) NOT NULL,"
+					+ "LicenseNumber varchar(10) NOT NULL, "
+					+ "CONSTRAINT pk_visitor PRIMARY KEY(PhoneNumber, LicenseNumber))"
+				);
+			System.out.println("Visitor table created successfully");
+		} catch(SQLException e) {
+			System.out.println("Failed to create visitor table " + e.getMessage());
+		}
+	}
+	
+	public static void createNonVisitorPermitsTable(Connection conn) {
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.execute("CREATE TABLE NonvisitorPermits( "
+					+ "PermitId varchar(8), "
+					+ "Univid varchar(10) NOT NULL, "
+					+ "LicenseNumber varchar(10) NOT NULL, "
+					+ "StartDate varchar(15), "
+					+ "ExpirationDate varchar(15), "
+					+ "ExpirationTime varchar(15), "
+					+ "SpaceType varchar(20), "
+					+ "FOREIGN KEY (Univid) REFERENCES Users(Univid), "
+					+ "FOREIGN KEY (LicenseNumber) REFERENCES Vehicle(LicenseNumber), "
+					+ "PRIMARY KEY (PermitId))" 
+				);
+			System.out.println("NonVisitor Permits table created successfully");
+		} catch(SQLException e) {
+			System.out.println("Failed to create non visitor permits table " + e.getMessage());
+		}
+	}
+	
+	public static void createVisitorPermitsTable(Connection conn) {
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.execute("CREATE TABLE VisitorPermits( "
+					+ "PermitId varchar(8), "
+					+ "LicenseNumber varchar(10) NOT NULL, "
+					+ "StartDate varchar(15), "
+					+ "ExpirationDate varchar(15), "
+					+ "ExpirationTime varchar(15), "
+					+ "SpaceType varchar(20), "
+					+ "FOREIGN KEY (LicenseNumber) REFERENCES Vehicle(LicenseNumber), "
+					+ "PRIMARY KEY (PermitId))" 
+				);
+			System.out.println("Visitor Permits table created successfully");
+		} catch(SQLException e) {
+			System.out.println("Failed to create visitor permits table " + e.getMessage());
+		}
+	}
 	
 	public static void main(String args[]) {
 		DatabaseConnection dbConnection = new DatabaseConnection();
 		Connection conn = dbConnection.createConnection();
 		
 //		createLotsTable(conn);
-		createVehicleTable(conn);
 	
 	}
 	

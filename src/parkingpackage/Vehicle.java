@@ -5,44 +5,40 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class Vehicle {
-	String licenseplate;
+	String licenseNumber;
 	String manufacturer;
 	String model;
 	String color;
 	int year;
-	String phoneNumber;
 	Connection conn;
 	
-	Vehicle(String phoneNumber,String licenseplate, String manufacturer, String model,String color,int year, Connection conn){
-		this.licenseplate=licenseplate;
+	Vehicle(String licenseNumber, String manufacturer, String model,String color,int year, Connection conn){
+		this.licenseNumber=licenseNumber;
 		this.manufacturer=manufacturer;
 		this.model=model;
 		this.color=color;
 		this.year=year;
-		this.phoneNumber = phoneNumber;
 		this.conn = conn;
 	}
 
-	public void addVisitor() {
+	public void addVehicle() {
 		PreparedStatement stmt;
 		try {
-			stmt = this.conn.prepareStatement("INSERT INTO VisitorVehicle "
-										+ "(Phone_no,LicensePlate,Manufacturer,Model,Color,Year) "
-										+ "VALUES (?,?,?,?,?,?)"
+			stmt = this.conn.prepareStatement("INSERT INTO Vehicle "
+										+ "(LicenseNumber,Manufacturer,Model,Color,Year) "
+										+ "VALUES (?,?,?,?,?)"
 										);
 			
-			stmt.setString(1, phoneNumber);
-			stmt.setString(2, licenseplate);
-			stmt.setString(3, manufacturer);
-			stmt.setString(4, model);
-			stmt.setString(5, color);
-			stmt.setInt(6, year);
+			stmt.setString(1, licenseNumber);
+			stmt.setString(2, manufacturer);
+			stmt.setString(3, model);
+			stmt.setString(4, color);
+			stmt.setInt(5, year);
 			
 			stmt.executeUpdate();
-			System.out.println("VisitorVehicle entry added successfully");
 			
 		} catch(SQLException e) {
-			System.out.println("Failed to add phone number to VisitorVehicle " + e.getMessage());
+			System.out.println("Failed to add Vehicle " + e.getMessage());
 		}
 	}
 	
