@@ -2,7 +2,6 @@ package parkingpackage;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Vehicle {
@@ -11,17 +10,40 @@ public class Vehicle {
 	String model;
 	String color;
 	int year;
+	String phoneNumber;
 	Connection conn;
 	
-	Vehicle(String licenseplate, String manufacturer, String model,String color,int year,Connection conn){
-		this.conn=conn;
+	Vehicle(String phoneNumber,String licenseplate, String manufacturer, String model,String color,int year, Connection conn){
 		this.licenseplate=licenseplate;
 		this.manufacturer=manufacturer;
 		this.model=model;
 		this.color=color;
 		this.year=year;
+		this.phoneNumber = phoneNumber;
+		this.conn = conn;
 	}
-	
-	
+
+	public void addVisitor() {
+		PreparedStatement stmt;
+		try {
+			stmt = this.conn.prepareStatement("INSERT INTO VisitorVehicle "
+										+ "(Phone_no,LicensePlate,Manufacturer,Model,Color,Year) "
+										+ "VALUES (?,?,?,?,?,?)"
+										);
+			
+			stmt.setString(1, phoneNumber);
+			stmt.setString(2, licenseplate);
+			stmt.setString(3, manufacturer);
+			stmt.setString(4, model);
+			stmt.setString(5, color);
+			stmt.setInt(6, year);
+			
+			stmt.executeUpdate();
+			System.out.println("VisitorVehicle entry added successfully");
+			
+		} catch(SQLException e) {
+			System.out.println("Failed to add phone number to VisitorVehicle " + e.getMessage());
+		}
+	}
 	
 }

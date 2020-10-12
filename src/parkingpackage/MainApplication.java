@@ -113,7 +113,7 @@ public class MainApplication {
 				String color=sc.next();
 				int year=Integer.parseInt(sc.next());
 				
-				VisitorVehicle vv=new VisitorVehicle(phone,licenseplate,manufacturer,model,color,year,conn);
+				Vehicle vv=new Vehicle(phone,licenseplate,manufacturer,model,color,year,conn);
 				vv.addVisitor();
 				
 				System.out.println("Visitor entry added");

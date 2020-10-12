@@ -39,7 +39,7 @@ public class Admin extends User{
 				String name = sc.next();
 				System.out.println("Enter the zone");
 				String zone = sc.next();
-				System.out.println("Ebnter the start space number");
+				System.out.println("Enter the start space number");
 				int startSpaceNumber = sc.nextInt();
 				System.out.println("Enter number of spaces");
 				int numSpaces = sc.nextInt();
