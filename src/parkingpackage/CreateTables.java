@@ -120,6 +120,8 @@ public class CreateTables {
 					+ "ExpirationDate varchar(15), "
 					+ "ExpirationTime varchar(15), "
 					+ "SpaceType varchar(20), "
+					+ "LotName varchar(20), "
+					+ "SpaceNumber varchar(20), "
 					+ "FOREIGN KEY (LicenseNumber) REFERENCES Vehicle(LicenseNumber), "
 					+ "PRIMARY KEY (PermitId))" 
 				);
@@ -133,7 +135,9 @@ public class CreateTables {
 		DatabaseConnection dbConnection = new DatabaseConnection();
 		Connection conn = dbConnection.createConnection();
 		
-//		createLotsTable(conn);
+//		createVehicleTable(conn);
+//		createNonVisitorPermitsTable(conn);
+//		createVisitorPermitsTable(conn);
 	
 	}
 	

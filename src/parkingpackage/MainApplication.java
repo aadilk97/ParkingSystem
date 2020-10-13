@@ -2,7 +2,9 @@ package parkingpackage;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Random;
 import java.util.Scanner;
+import java.sql.Timestamp;
 
 public class MainApplication {
 	
@@ -122,7 +124,44 @@ public class MainApplication {
 				vv.addVehicle();
 				
 				System.out.println("Vehicle added successfully");
-				
+	
+				while (true) {
+					System.out.print("Enter the value for a parking lot:\n");
+					String lotname=sc.next();
+					
+					System.out.print("Enter the desired space number:\n");
+					int spaceNumber=Integer.parseInt(sc.next());
+					
+					System.out.println("Enter the space type:\n");
+					String spaceType=sc.next();
+					
+					Space space=new Space(lotname,spaceNumber,"V",spaceType,conn);
+					if(space.isSpaceAvailableVisitor().equals("Yes")) {
+						space.updateAvailable();
+						System.out.println("Enter the permit duration required ranging between 1-4 hours (inclusive)\n");
+						int duration=Integer.parseInt(sc.next());
+						
+						Timestamp time=new Timestamp(new java.util.Date().getTime());
+						String datetime[]=time.toString().split(" ");
+						System.out.println(datetime[0]);// start date
+						
+						Timestamp exp = new Timestamp(System.currentTimeMillis() + duration *60*60);
+						String expdt[]=exp.toString().split(" ");
+						System.out.println(expdt[0]);//exp date
+						System.out.println(expdt[1]);//exp time
+						
+						String startDate=datetime[0];
+						
+						//pass to visitorpermit class and create visitor permit
+						VisitorPermit vpermit=new VisitorPermit(licenseNumber,datetime[0],expdt[0],expdt[1],spaceType,lotname,spaceNumber,"V",conn);
+						vpermit.getVisitorPermit();
+						break;
+					}
+					else {
+						System.out.println("Cannot park here, try some other values");
+					}
+				}
+//				System.out.println("I'm outside");
 			}
 			
 			else if(role == 5) {
