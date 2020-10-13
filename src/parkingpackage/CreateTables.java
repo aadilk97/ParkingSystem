@@ -135,13 +135,10 @@ public class CreateTables {
 		DatabaseConnection dbConnection = new DatabaseConnection();
 		Connection conn = dbConnection.createConnection();
 		
-		createLotsTable(conn);
-		createUserTable(conn);
-		createSpacesTable(conn);
-		createVisitorPermitsTable(conn);
-		createNonVisitorPermitsTable(conn);
-		createVehicleTable(conn);
-		createVisitorTable(conn);
+//		createVehicleTable(conn);
+//		createNonVisitorPermitsTable(conn);
+//		createVisitorPermitsTable(conn);
+	
 	}
 	
 }

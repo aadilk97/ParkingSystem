@@ -153,7 +153,7 @@ public class MainApplication {
 						String startDate=datetime[0];
 						
 						//pass to visitorpermit class and create visitor permit
-						VisitorPermit vpermit=new VisitorPermit("554433B",datetime[0],expdt[0],expdt[1],spaceType,lotname,spaceNumber,"V",conn);
+						VisitorPermit vpermit=new VisitorPermit(licenseNumber,datetime[0],expdt[0],expdt[1],spaceType,lotname,spaceNumber,"V",conn);
 						vpermit.getVisitorPermit();
 						break;
 					}

@@ -91,7 +91,7 @@ public class Space extends Lots{
 		String getType="";
 		try {
 			stmt=this.conn.prepareStatement("SELECT * from Spaces "
-					+ "WHERE Name=? AND SpaceNumber=?;");
+					+ "WHERE Name=? AND SpaceNumber=?");
 			stmt.setString(1, super.name);
 			stmt.setInt(2,spaceNum);
 			ResultSet result=stmt.executeQuery();
@@ -103,7 +103,7 @@ public class Space extends Lots{
 			}
 		}
 		catch(SQLException e) {
-			System.out.println("Desired space doesn't exist");
+			System.out.println("Desired space doesn't exist " + e.getMessage());
 		}
 //		System.out.println(getType);
 //		System.out.println(getZone);
