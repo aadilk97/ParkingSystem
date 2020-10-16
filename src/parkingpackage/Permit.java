@@ -20,6 +20,8 @@ public class Permit {
 		this.conn=conn;
 	}
 	
+	Permit(){}
+	
 	public String getRandomString() {
 		final String LOWER = "abcdefghijklmnopqrstuvwxyz";
 	    final String UPPER = LOWER.toUpperCase();
