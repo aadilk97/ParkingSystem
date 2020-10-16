@@ -1,7 +1,13 @@
 package parkingpackage;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Scanner;
+import java.util.Calendar;
+import java.util.Date;
 
 
 public class Admin extends User{
@@ -9,10 +15,32 @@ public class Admin extends User{
 		super(conn);
 	}
 	
+	public String getUserType(String univid) {
+		PreparedStatement stmt;
+		ResultSet rs = null;
+		try {
+			stmt = this.conn.prepareStatement("SELECT Type FROM Users "
+					+ "WHERE Univid = ?"
+					);
+			
+			stmt.setString(1, univid);
+			rs = stmt.executeQuery();
+			
+			while(rs.next()) {
+				return rs.getString("Type");
+			}
+			
+		} catch(SQLException e) {
+			System.out.println("Failed to get user with the given univid " + e.getMessage());
+		}
+		
+		return "";
+	}
+	
 	public void adminScreen() {
 		Scanner sc = new Scanner(System.in);
 		while (true) {
-			System.out.println("Enter a choice 1. Add Lot  2. Add Zone  3. Add type   M. Main menu");
+			System.out.println("Enter a choice 1. Add Lot  2. Add Zone  3. Add type  4. Assign Permit  M. Main menu");
 			String choice = sc.next();
 			
 			
@@ -66,6 +94,43 @@ public class Admin extends User{
 				space.setType(type);
 				space.setSpaceNum(spaceNum);
 				space.addTypeToSpace();
+				
+			}
+			
+			else if(choice.equalsIgnoreCase("4")) {
+				System.out.println("Enter the univid");
+				String univid = sc.next();
+				System.out.println("Enter the zone");
+				String zone = sc.next();
+				System.out.println("Enter type of space needed");
+				String type = sc.next();
+				type = type.equalsIgnoreCase("") ? "regular" : type;
+				System.out.println("Enter the license number");
+				String licenseNumber = sc.next();
+				String userType = getUserType(univid);
+				String startDate = new Timestamp(new Date().getTime()).toString().split(" ")[0];
+				String expDate = "";
+				String expTime = "23:59:59";
+				
+				Date currDate = new Date();
+				Calendar calendar = Calendar.getInstance(); 
+				calendar.setTime(currDate);
+				
+				
+				if(userType.equalsIgnoreCase("Student")) {
+					calendar.add(Calendar.MONTH, 4);	
+				}
+				
+				else if(userType.equalsIgnoreCase("Employee")) {
+					calendar.add(Calendar.MONTH, 12);	
+				}
+				
+				Timestamp time = new Timestamp(calendar.getTime().getTime());
+				String datetime[]=time.toString().split(" ");
+				expDate = datetime[0];
+				
+				NonVisitorPermit nvpermit = new NonVisitorPermit(licenseNumber, startDate, expDate, expTime, type, zone, univid, this.conn);
+				nvpermit.getNonVisitorPermit();
 				
 			}
 			
