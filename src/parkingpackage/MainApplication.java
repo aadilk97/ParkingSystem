@@ -28,154 +28,181 @@ public class MainApplication {
 	}
 	
 	
-	public static void main(String args[]) throws SQLException{
+	public static void main(String args[]) throws SQLException {
 		DatabaseConnection dbConnection = new DatabaseConnection();
 		Connection conn = dbConnection.createConnection();
-		
-		if(dbConnection.testConnection(conn)) {
+
+		if (dbConnection.testConnection(conn)) {
 			System.out.println("Connection successful");
-		}
-		else {
+		} else {
 			System.out.println("Connection Failed");
 		}
-		
+
 		Scanner sc = new Scanner(System.in);
-		while(true) {
+		while (true) {
 			System.out.println("Enter a role 1.Admin 2.Employee 3.Student 4.Visitor 5.Exit");
 			int role = sc.nextInt();
-			
-			if(role < 4) {
+
+			if (role < 4) {
 				String type = "";
-				switch(role) {
-					case 1:
-						type = "Admin";
-						break;
-						
-					case 2:
-						type = "Employee";
-						break;
-						
-					case 3:
-						type = "Student";
-						break;
+				switch (role) {
+				case 1:
+					type = "Admin";
+					break;
+
+				case 2:
+					type = "Employee";
+					break;
+
+				case 3:
+					type = "Student";
+					break;
 				}
 
-				
 				System.out.println("1.Login  2.SignUp");
 				int choice = sc.nextInt();
-				
-				if(choice == 1) {
+
+				if (choice == 1) {
 					System.out.println("Enter the univid");
 					String univid = sc.next();
-					
+
 					System.out.println("Enter the password");
 					String password = sc.next();
-					
-					
+
 					User user = new User(conn);
 					if (user.checkLogin(univid, password, type)) {
 						System.out.println("Login successful");
-						
-						if(type.equalsIgnoreCase("Employee")) {
+
+						if (type.equalsIgnoreCase("Employee")) {
 							employeeScreen();
 						}
-						
-						else if(type.equalsIgnoreCase("Admin")) {
+
+						else if (type.equalsIgnoreCase("Admin")) {
 							Admin admin = new Admin(conn);
 							admin.adminScreen();
 						}
-						
+
 						else {
 							studentScreen();
 						}
-						
-					}
-					else {
+
+					} else {
 						System.out.println("Invalid credentials, login failed");
 					}
 				}
-				
-				else if(choice == 2) {
+
+				else if (choice == 2) {
 					signup(conn, type, sc);
 				}
-				
+
 			}
-			
-			else if(role == 4) {
-				System.out.println("Hi Visitor welcome to our Parking Lot!");
-				System.out.println("Please enter a valid contact number without spaces");
-				String phoneNumber=sc.next();
-				System.out.println("Enter the license number");
-				String licenseNumber=sc.next();
-				
-				Visitor visitor = new Visitor(phoneNumber, licenseNumber, conn);
-				visitor.addVisitor();
-				System.out.println("Visitor added successfully");
-				
-				System.out.println("Enter your car details in the order mentioned below\n\n");
-				System.out.println("Manufacturer Model Color Year");			
-				
-				String manufacturer=sc.next();
-				String model=sc.next();
-				String color=sc.next();
-				int year=Integer.parseInt(sc.next());
-				
-				Vehicle vv=new Vehicle(licenseNumber,manufacturer,model,color,year,conn);
-				vv.addVehicle();
-				
-				System.out.println("Vehicle added successfully");
-	
+
+			else if (role == 4) {
 				while (true) {
-					System.out.print("Enter the value for a parking lot:\n");
-					String lotname=sc.next();
-					
-					System.out.print("Enter the desired space number:\n");
-					int spaceNumber=Integer.parseInt(sc.next());
-					
-					System.out.println("Enter the space type:\n");
-					String spaceType=sc.next();
-					
-					Space space=new Space(lotname,spaceNumber,"V",spaceType,conn);
-					if(space.isSpaceAvailableVisitor().equals("Yes")) {
-						space.updateAvailable();
-						System.out.println("Enter the permit duration required ranging between 1-4 hours (inclusive)\n");
-						int duration=Integer.parseInt(sc.next());
-						
-						Timestamp time=new Timestamp(new java.util.Date().getTime());
-						String datetime[]=time.toString().split(" ");
-						System.out.println(datetime[0]);// start date
-						
-						Timestamp exp = new Timestamp(System.currentTimeMillis() + duration *60*60);
-						String expdt[]=exp.toString().split(" ");
-						System.out.println(expdt[0]);//exp date
-						System.out.println(expdt[1]);//exp time
-						
-						String startDate=datetime[0];
-						
-						//pass to visitorpermit class and create visitor permit
-						VisitorPermit vpermit=new VisitorPermit(licenseNumber,datetime[0],expdt[0],expdt[1],spaceType,lotname,spaceNumber,"V",conn);
-						vpermit.getVisitorPermit();
+					System.out.println("Enter your choice: 1. Entry \t2. Exit");
+					int ch = sc.nextInt();
+					if (ch == 1) {
+						// Entry WorkFlow
+						System.out.println("Hi Visitor welcome to our Parking Lot!");
+						System.out.println("Please enter a valid contact number without spaces");
+						String phoneNumber = sc.next();
+						System.out.println("Enter the license number");
+						String licenseNumber = sc.next();
+
+						System.out.println("Entry");
+						Visitor visitor = new Visitor(phoneNumber, licenseNumber, conn);
+						visitor.addVisitor();
+						System.out.println("Visitor added successfully");
+
+						System.out.println("Enter your car details in the order mentioned below\n\n");
+						System.out.println("Manufacturer Model Color Year");
+
+						String manufacturer = sc.next();
+						String model = sc.next();
+						String color = sc.next();
+						int year = Integer.parseInt(sc.next());
+
+						Vehicle vv = new Vehicle(licenseNumber, manufacturer, model, color, year, conn);
+						vv.addVehicle();
+
+						System.out.println("Vehicle added successfully");
+
+						while (true) {
+							System.out.print("Enter the value for a parking lot:\n");
+							String lotname = sc.next();
+
+							System.out.print("Enter the desired space number:\n");
+							int spaceNumber = Integer.parseInt(sc.next());
+
+							System.out.println("Enter the space type:\n");
+							String spaceType = sc.next();
+
+							Space space = new Space(lotname, spaceNumber, "V", spaceType, conn);
+							if (space.isSpaceAvailableVisitor().equals("Yes")) {
+								space.updateAvailable("No");
+								System.out.println(
+										"Enter the permit duration required ranging between 1-4 hours (inclusive)\n");
+								int duration = Integer.parseInt(sc.next());
+
+								Timestamp time = new Timestamp(new java.util.Date().getTime());
+								String datetime[] = time.toString().split(" ");
+								System.out.println(datetime[0]);// start date
+
+								Timestamp exp = new Timestamp(System.currentTimeMillis() + duration * 60 * 60*1000);
+								String expdt[] = exp.toString().split(" ");
+								System.out.println(expdt[0]);// exp date
+								System.out.println(expdt[1]);// exp time
+
+								String startDate = datetime[0];
+
+								// pass to visitorpermit class and create visitor permit
+								VisitorPermit vpermit = new VisitorPermit(licenseNumber, datetime[0], expdt[0],
+										expdt[1], spaceType, lotname, spaceNumber, "V", conn);
+								vpermit.getVisitorPermit();
+								break;
+							} else {
+								System.out.println("Cannot park here, try some other values");
+							}
+						}
 						break;
+					} else if (ch == 2) {
+						// Exit Workflow
+						System.out.println("Exit");
+
+						System.out.println("Enter your permit number");
+						String permitID = sc.next();
+
+						VisitorPermit vpermit = new VisitorPermit(conn);
+						vpermit.ExitLot(permitID);
+						break;
+					} else {
+						System.out.println("Enter a valid choice and try again");
 					}
-					else {
-						System.out.println("Cannot park here, try some other values");
-					}
+//					if (ch==1) {
+//			
+
+//					}
+//					else {
+//						System.out.println("Enter your permit number");
+//						String permit_id=sc.next();
+//						
+//					}
 				}
+
 //				System.out.println("I'm outside");
 			}
-			
-			else if(role == 5) {
+
+			else if (role == 5) {
 				break;
 			}
-			
+
 			else {
 				System.out.println("Invalid choice");
 			}
 		}
-	
 
 		sc.close();
 		conn.close();
-		
+
 	}
 }
