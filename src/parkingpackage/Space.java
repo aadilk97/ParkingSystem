@@ -30,6 +30,12 @@ public class Space extends Lots{
 		super(name, conn);
 		this.conn = conn;
 	}
+	
+	Space(String name, int spaceNum, Connection conn){
+		super(name,conn);
+		this.spaceNum=spaceNum;
+		this.conn=conn;
+	}
 
 	public void addSpace() {
 		PreparedStatement stmt;
@@ -114,16 +120,16 @@ public class Space extends Lots{
 		return "No";
 	}
 	
-	public void updateAvailable() {
+	public void updateAvailable(String updateAs) {
 		PreparedStatement stmt;
 		try {
 			stmt=this.conn.prepareStatement("UPDATE Spaces "
 					+"SET Available=? "
 					+"WHERE Name=? AND SpaceNumber=?");
-			stmt.setString(1, "No");
+			stmt.setString(1, updateAs);
 			stmt.setString(2, super.name);
 			stmt.setInt(3, spaceNum);
-			System.out.println(stmt);
+//			System.out.println(stmt);
 			stmt.executeUpdate();
 			System.out.println("Space Availability updated");
 		}
