@@ -102,9 +102,15 @@ public class Admin extends User{
 				String univid = sc.next();
 				System.out.println("Enter the zone");
 				String zone = sc.next();
-				System.out.println("Enter type of space needed");
-				String type = sc.next();
-				type = type.equalsIgnoreCase("") ? "regular" : type;
+				String type = "regular";
+				System.out.println("Do you want to request a specific type. Enter Yes to do so");
+				String typeChoice = sc.next();
+				
+				if(typeChoice.equalsIgnoreCase("Yes")) {
+					System.out.println("Enter the type");
+					type = sc.next();
+				}
+				
 				System.out.println("Enter the license number");
 				String licenseNumber = sc.next();
 				String userType = getUserType(univid);
