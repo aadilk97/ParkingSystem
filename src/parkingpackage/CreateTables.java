@@ -93,13 +93,17 @@ public class CreateTables {
 		try {
 			Statement stmt = conn.createStatement();
 			stmt.execute("CREATE TABLE NonvisitorPermits( "
-					+ "PermitId varchar(8), "
+					+ "PermitId varchar(8) NOT NULL, "
 					+ "Univid varchar(10) NOT NULL, "
 					+ "LicenseNumber varchar(10) NOT NULL, "
 					+ "StartDate varchar(15), "
 					+ "ExpirationDate varchar(15), "
 					+ "ExpirationTime varchar(15), "
 					+ "SpaceType varchar(20), "
+					+ "Manufacturer varchar(20), "
+					+ "Model varchar(20), "
+					+ "Color varchar(20), "
+					+ "Year varchar(4), "
 					+ "FOREIGN KEY (Univid) REFERENCES Users(Univid), "
 					+ "FOREIGN KEY (LicenseNumber) REFERENCES Vehicle(LicenseNumber), "
 					+ "PRIMARY KEY (PermitId))" 
@@ -136,7 +140,7 @@ public class CreateTables {
 		Connection conn = dbConnection.createConnection();
 		
 //		createVehicleTable(conn);
-//		createNonVisitorPermitsTable(conn);
+		createNonVisitorPermitsTable(conn);
 //		createVisitorPermitsTable(conn);
 	
 	}
