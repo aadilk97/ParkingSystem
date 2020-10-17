@@ -56,32 +56,36 @@ public class VisitorPermit extends Permit{
 		String lotname="";
 		int spaceNumber=0;
 		Timestamp expTime = null;
+		String expTimeStr = "";
+		String expDate = "";
 		try {
 			stmt=this.conn.prepareStatement("SELECT * from VisitorPermits "
 					+ "WHERE PermitId=?");
 			stmt.setString(1, permit_id);
 			
-			System.out.println(stmt);
 			ResultSet result=stmt.executeQuery();
 			
 			//get lotname and spaceNumber to update
 			while(result.next()) {
 				lotname=result.getString("LotName");
 				spaceNumber=result.getInt("SpaceNumber");
-				expTime=result.getTimestamp(5);
+				expDate = result.getString("ExpirationDate");
+				expTimeStr=result.getString("ExpirationTime");
+				
 			}
-			
-			System.out.println(lotname);
-			System.out.println(spaceNumber);
+			expTime = Timestamp.valueOf(expDate + " " + expTimeStr);
+			System.out.println("L " + lotname);
+			System.out.println("S " + spaceNumber);
+			System.out.println("E " + expTime);
 			Space space=new Space(lotname,spaceNumber,conn);
 			space.updateAvailable("Yes");
 			Timestamp curtime = new Timestamp(new java.util.Date().getTime());
 			
 			//calculate extra charges if any
 			
-			if(expTime.getTime()-curtime.getTime()<0) {
-				System.out.println("Your permit has expired and you have been charged $25");
-			}
+//			if(expTime.getTime()-curtime.getTime()<0) {
+//				System.out.println("Your permit has expired and you have been charged $25");
+//			}
 			
 			PreparedStatement stmt1;
 			try {
@@ -99,8 +103,8 @@ public class VisitorPermit extends Permit{
 			}
 
 		}
-		catch(Exception e) {
-			System.out.println("Error updating query");
+		catch(SQLException e) {
+			System.out.println("Error updating query " + e);
 		}
 	}
 }

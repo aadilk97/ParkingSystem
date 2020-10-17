@@ -140,7 +140,7 @@ public class CreateTables {
 		Connection conn = dbConnection.createConnection();
 		
 //		createVehicleTable(conn);
-		createNonVisitorPermitsTable(conn);
+//		createNonVisitorPermitsTable(conn);
 //		createVisitorPermitsTable(conn);
 	
 	}
