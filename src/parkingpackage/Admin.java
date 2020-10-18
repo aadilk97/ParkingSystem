@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Scanner;
 import java.util.Calendar;
@@ -37,10 +38,52 @@ public class Admin extends User{
 		return "";
 	}
 	
+	public String checkVVisitorParking(String licenseNumber, String lName, int sNum, Timestamp curtime) {
+		PreparedStatement stmt;
+		String lotName="";
+		int spaceNumber=0;
+		String expTimeStr = "";
+		String expDate = "";
+		
+		try {
+			stmt=this.conn.prepareStatement("SELECT * from VisitorPermits "
+					+ "WHERE LicenseNumber=?");
+			stmt.setString(1, licenseNumber);
+			
+			ResultSet res=stmt.executeQuery();
+			
+			while(res.next()) {
+				lotName=res.getString("LotName");
+				spaceNumber=res.getInt("SpaceNumber");
+				expDate = res.getString("ExpirationDate");
+				expTimeStr=res.getString("ExpirationTime");
+			}
+			if (lotName.equalsIgnoreCase("unassigned") && spaceNumber==-1) {
+				return "Vehicle "+licenseNumber+ " has already left the parking lot";
+			}
+			else if(lName.equalsIgnoreCase(lotName) && spaceNumber==sNum) {
+				Timestamp expTime = Timestamp.valueOf(expDate + " " + expTimeStr.toString());
+				if(expTime.getTime()-curtime.getTime()<0) {
+					return "Vehicle "+licenseNumber+" has an expired permit";
+				}
+				else {
+					return "Vehicle "+licenseNumber+" has a valid permit";
+				}
+			}
+			else {
+				return "Vehicle "+licenseNumber+" has been parked in an unauthorized zone";
+			}
+		}
+		catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}	
+		return null;	
+	}
+	
 	public void adminScreen() {
 		Scanner sc = new Scanner(System.in);
 		while (true) {
-			System.out.println("Enter a choice 1. Add Lot  2. Add Zone  3. Add type  4. Assign Permit  M. Main menu");
+			System.out.println("Enter a choice 1. Add Lot  2. Add Zone  3. Add type  4. Assign Permit  5. CheckVValidParking M. Main menu");
 			String choice = sc.next();
 			
 			
@@ -137,6 +180,18 @@ public class Admin extends User{
 				
 				NonVisitorPermit nvpermit = new NonVisitorPermit(licenseNumber, startDate, expDate, expTime, type, zone, univid, this.conn);
 				nvpermit.getNonVisitorPermit("");
+				
+			}
+			
+			else if(choice.equalsIgnoreCase("5")) {
+				System.out.println("Enter a valid Visitor license plate number");
+				String licenseNumber=sc.next();
+				
+				System.out.println("Enter lotname and spacenumber for the parked vehicle"); //would always be valid
+				String lotName=sc.next();
+				int spaceNumber=sc.nextInt();
+				Timestamp curtime = new Timestamp(new java.util.Date().getTime());
+				System.out.println("STATUS: "+checkVVisitorParking(licenseNumber,lotName,spaceNumber,curtime));
 				
 			}
 			
