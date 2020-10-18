@@ -100,13 +100,14 @@ public class CreateTables {
 					+ "ExpirationDate varchar(15), "
 					+ "ExpirationTime varchar(15), "
 					+ "SpaceType varchar(20), "
+					+ "Zone varchar(2), "
 					+ "Manufacturer varchar(20), "
 					+ "Model varchar(20), "
 					+ "Color varchar(20), "
 					+ "Year varchar(4), "
 					+ "FOREIGN KEY (Univid) REFERENCES Users(Univid), "
 					+ "FOREIGN KEY (LicenseNumber) REFERENCES Vehicle(LicenseNumber), "
-					+ "PRIMARY KEY (PermitId))" 
+					+ "PRIMARY KEY (PermitId, LicenseNumber))" 
 				);
 			System.out.println("NonVisitor Permits table created successfully");
 		} catch(SQLException e) {

@@ -74,18 +74,15 @@ public class VisitorPermit extends Permit{
 				
 			}
 			expTime = Timestamp.valueOf(expDate + " " + expTimeStr);
-			System.out.println("L " + lotname);
-			System.out.println("S " + spaceNumber);
-			System.out.println("E " + expTime);
 			Space space=new Space(lotname,spaceNumber,conn);
 			space.updateAvailable("Yes");
 			Timestamp curtime = new Timestamp(new java.util.Date().getTime());
 			
 			//calculate extra charges if any
 			
-//			if(expTime.getTime()-curtime.getTime()<0) {
-//				System.out.println("Your permit has expired and you have been charged $25");
-//			}
+			if(expTime.getTime()-curtime.getTime()<0) {
+				System.out.println("Your permit has expired and you have been charged $25");
+			}
 			
 			PreparedStatement stmt1;
 			try {
