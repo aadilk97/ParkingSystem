@@ -31,9 +31,10 @@ public class NonVisitorPermit extends Permit {
 		return rs;
 	}
 	
-	void getNonVisitorPermit() {
-		String permit_id = super.getRandomString();
-		
+	void getNonVisitorPermit(String permit_id) {
+		if (permit_id.equalsIgnoreCase("")) {
+			permit_id = super.getRandomString();
+		}
 		String manufacturer, model, color, year;
 		manufacturer = "";
 		model = "";
@@ -58,8 +59,8 @@ public class NonVisitorPermit extends Permit {
 		try {
 			stmt=this.conn.prepareStatement("INSERT INTO NonvisitorPermits "
 					+ "(PermitId,Univid,LicenseNumber,StartDate,ExpirationDate,ExpirationTime,"
-					+ "SpaceType,Manufacturer,Model,Color,Year) "
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+					+ "SpaceType,Zone,Manufacturer,Model,Color,Year) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			stmt.setString(1, permit_id);
 			stmt.setString(2, this.univid);
 			stmt.setString(3, super.licenseNumber);
@@ -67,10 +68,11 @@ public class NonVisitorPermit extends Permit {
 			stmt.setString(5, super.expirationDate);
 			stmt.setString(6, super.expirationTime);
 			stmt.setString(7, super.spaceType);
-			stmt.setString(8, manufacturer);
-			stmt.setString(9, model);
-			stmt.setString(10, color);
-			stmt.setString(11, year);
+			stmt.setString(8, super.zone);
+			stmt.setString(9, manufacturer);
+			stmt.setString(10, model);
+			stmt.setString(11, color);
+			stmt.setString(12, year);
 			
 			stmt.executeUpdate();
 			

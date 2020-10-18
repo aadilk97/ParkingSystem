@@ -74,7 +74,8 @@ public class MainApplication {
 						System.out.println("Login successful");
 
 						if (type.equalsIgnoreCase("Employee")) {
-							employeeScreen();
+							Employee employee = new Employee(conn);
+							employee.employeeScreen();
 						}
 
 						else if (type.equalsIgnoreCase("Admin")) {
