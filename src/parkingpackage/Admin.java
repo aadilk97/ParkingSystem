@@ -83,7 +83,8 @@ public class Admin extends User{
 	public void adminScreen() {
 		Scanner sc = new Scanner(System.in);
 		while (true) {
-			System.out.println("Enter a choice 1. Add Lot  2. Add Zone  3. Add type  4. Assign Permit  5. CheckVValidParking M. Main menu");
+			System.out.println("Enter a choice 1. Add Lot  2. Add Zone  3. Add type  "
+					+ "4. Assign Permit  5. CheckVValidParking  6. CheckNVValidParking M. Main menu");
 			String choice = sc.next();
 			
 			
@@ -193,6 +194,28 @@ public class Admin extends User{
 				Timestamp curtime = new Timestamp(new java.util.Date().getTime());
 				System.out.println("STATUS: "+checkVVisitorParking(licenseNumber,lotName,spaceNumber,curtime));
 				
+			}
+			
+			else if(choice.equalsIgnoreCase("6")) {
+				System.out.println("Enter the permitID");
+				String permitId = sc.next();
+				System.out.println("Enter the time eg: 06:PM");
+				String time = sc.next();
+				System.out.println("Enter the lot in which the vehicle has been parked");
+				String lotParked = sc.next();
+				System.out.println("Enter the zone in which the vehicle has been parked");
+				String zoneParked = sc.next();
+				System.out.println("Enter the space number in which the vehicle is parked");
+				String spaceNumParked = sc.next();
+				
+				NonVisitorPermit nvpermit = new NonVisitorPermit(conn);
+				if (nvpermit.checkNonVisitorPermit(permitId, lotParked, zoneParked, spaceNumParked, time)) {
+					System.out.println("Valid parking");
+				}
+				
+				else {
+					System.out.println("Invalid parking");
+				}
 			}
 			
 			else if(choice.equalsIgnoreCase("M")) {
