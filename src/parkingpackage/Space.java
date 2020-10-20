@@ -50,6 +50,8 @@ public class Space extends Lots{
 			stmt.setString(3, super.name);
 			
 			stmt.executeUpdate();
+			stmt.close();
+			
 			
 		} catch(SQLException e) {
 			System.out.println("Failed to add space to lot " + e.getMessage());

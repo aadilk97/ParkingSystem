@@ -48,7 +48,7 @@ public class User {
 			stmt.executeUpdate();
 			System.out.println("User created successfully");
 			
-			if(!type.equalsIgnoreCase("1")) {
+			if(!type.equalsIgnoreCase("Admin")) {
 				System.out.println("Enter the license number");
 				String licenseNumber = sc.next();
 				System.out.println("Enter the manufacturer");
