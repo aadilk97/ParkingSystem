@@ -49,17 +49,28 @@ public class Notification extends Citation {
 
             varr.add(rs.getString("LicenseNumber"));
         }
-//        if (nvarr.contains(licenseNumber)){
-//            stmt=this.conn.prepareStatement("SELECT * FROM NonVisitorPermits "
-//                    +"WHERE LicenseNumber="+licenseNumber);
-//            userID = rs.getString("Univid");
-//        }
-//        else if (varr.contains(licenseNumber)){
-//            stmt=this.conn.prepareStatement("SELECT * FROM VisitorPermits "
-//                    +"WHERE LicenseNumber="+licenseNumber);
-//            userID = rs.getString("PhoneNumber");
-//        }
-
+        if (nvarr.contains(licenseNumber)){
+            stmt=this.conn.prepareStatement("SELECT * FROM NonVisitorPermits "
+                    +"WHERE LicenseNumber="+licenseNumber);
+            
+            rs = stmt.executeQuery();
+            
+            while(rs.next()) {
+            	userID = rs.getString("Univid");
+            }
+        }
+        else if (varr.contains(licenseNumber)){
+            stmt=this.conn.prepareStatement("SELECT * FROM Visitor "
+                    +"WHERE LicenseNumber="+licenseNumber);
+            
+            rs = stmt.executeQuery();
+            
+            while(rs.next()) {
+            	userID = rs.getString("PhoneNumber");
+            }
+        }
+        
+        
         try {
             stmt=this.conn.prepareStatement("INSERT INTO Notification "
                     + "(UserID, CitationNumber,LicenseNumber, ViolationCategory, CitationDate,Fee,DueDate) "
