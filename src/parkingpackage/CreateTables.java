@@ -120,6 +120,7 @@ public class CreateTables {
 			Statement stmt = conn.createStatement();
 			stmt.execute("CREATE TABLE VisitorPermits( "
 					+ "PermitId varchar(8), "
+					+ "PhoneNumber varchar(10) NOT NULL, "
 					+ "LicenseNumber varchar(10) NOT NULL, "
 					+ "StartDate varchar(15), "
 					+ "ExpirationDate varchar(15), "
@@ -128,6 +129,7 @@ public class CreateTables {
 					+ "LotName varchar(20), "
 					+ "SpaceNumber varchar(20), "
 					+ "FOREIGN KEY (LicenseNumber) REFERENCES Vehicle(LicenseNumber), "
+					+ "FOREIGN KEY (PhoneNumber) REFERENCES Visitor(PhoneNumber), "
 					+ "PRIMARY KEY (PermitId))" 
 				);
 			System.out.println("Visitor Permits table created successfully");
@@ -135,7 +137,7 @@ public class CreateTables {
 			System.out.println("Failed to create visitor permits table " + e.getMessage());
 		}
 	}
-	
+
 	public static void main(String args[]) {
 		DatabaseConnection dbConnection = new DatabaseConnection();
 		Connection conn = dbConnection.createConnection();
@@ -143,7 +145,7 @@ public class CreateTables {
 //		createVehicleTable(conn);
 //		createNonVisitorPermitsTable(conn);
 //		createVisitorPermitsTable(conn);
-	
+//		createVisitorTable(conn);
 	}
 	
 }
