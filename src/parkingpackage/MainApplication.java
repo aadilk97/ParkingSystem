@@ -27,7 +27,6 @@ public class MainApplication {
 		System.out.println("This is student screen");
 	}
 	
-	
 	public static void main(String args[]) throws SQLException {
 		DatabaseConnection dbConnection = new DatabaseConnection();
 		Connection conn = dbConnection.createConnection();
@@ -104,6 +103,7 @@ public class MainApplication {
 					int ch = sc.nextInt();
 					if (ch == 1) {
 						// Entry WorkFlow
+						
 						System.out.println("Hi Visitor welcome to our Parking Lot!");
 						System.out.println("Please enter a valid contact number without spaces");
 						String phoneNumber = sc.next();
@@ -140,17 +140,29 @@ public class MainApplication {
 
 							Space space = new Space(lotname, spaceNumber, "V", spaceType, conn);
 							if (space.isSpaceAvailableVisitor().equals("Yes")) {
-								space.updateAvailable("No");
-								System.out.println(
-										"Enter the permit duration required ranging between 1-4 hours (inclusive)\n");
-								int duration = Integer.parseInt(sc.next());
-
+//								space.updateAvailable("No");
+								System.out.println("Enter the Entry Time Value as instructed below:");
+								System.out.println("Ente the value of hour between 9-20 inclusive"); //assuming visitors are allowed only from 9am-8pm
+								String hr=sc.next();
+								System.out.println("Enter the value of mins between 00-60 inclusive");
+								String mins=sc.next();
+								
+								//get current date
 								Timestamp time = new Timestamp(new java.util.Date().getTime());
 								String datetime[] = time.toString().split(" ");
-								System.out.println(datetime[0]);// start date
-
-								Timestamp exp = new Timestamp(System.currentTimeMillis() + duration * 60 * 60*1000);
-								String expdt[] = exp.toString().split(" ");
+								
+								//today's date + entry time
+								Timestamp time1=Timestamp.valueOf(datetime[0]+" "+hr+":"+mins+":00.000");
+								Timestamp entry_time=time1;
+								System.out.println(entry_time);
+								
+								System.out.println("Enter the permit duration required ranging between 1-4 hours (inclusive)\n");
+								int duration = Integer.parseInt(sc.next());
+								
+								//compute expiration time
+								time1.setTime(time1.getTime()+duration*60*60*1000);
+								
+								String expdt[] = time1.toString().split(" ");
 								System.out.println(expdt[0]);// exp date
 								System.out.println(expdt[1]);// exp time
 
@@ -179,15 +191,6 @@ public class MainApplication {
 					} else {
 						System.out.println("Enter a valid choice and try again");
 					}
-//					if (ch==1) {
-//			
-
-//					}
-//					else {
-//						System.out.println("Enter your permit number");
-//						String permit_id=sc.next();
-//						
-//					}
 				}
 
 //				System.out.println("I'm outside");
