@@ -293,7 +293,7 @@ public class Admin extends User{
 				String lotParked = sc.next();
 				System.out.println("Enter the zone in which the vehicle has been parked");
 				String zoneParked = sc.next();
-				System.out.println("Enter the space type of the space in  which the vehicle is parked");
+				System.out.println("Enter the space number in which the vehicle is parked");
 				String spaceNumParked = sc.next();
 				
 				NonVisitorPermit nvpermit = new NonVisitorPermit(conn);
