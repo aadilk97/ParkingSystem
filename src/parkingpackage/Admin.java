@@ -38,6 +38,7 @@ public class Admin extends User{
 		return "";
 	}
 	
+
 	public String checkVVisitorParking(String licenseNumber, String lName, int sNum, Timestamp curtime) {
 		PreparedStatement stmt;
 		String lotName="";
@@ -81,10 +82,15 @@ public class Admin extends User{
 	}
 	
 	public void adminScreen() {
+
 		Scanner sc = new Scanner(System.in);
+		PreparedStatement stmt;
+		ResultSet rs = null;
 		while (true) {
+
 			System.out.println("Enter a choice 1. Add Lot  2. Add Zone  3. Add type  "
-					+ "4. Assign Permit  5. CheckVValidParking  6. CheckNVValidParking M. Main menu");
+					+ "4. Assign Permit  5. CheckVValidParking  6. CheckNVValidParking 7. Issue Citation M. Main menu");
+
 			String choice = sc.next();
 			
 			
@@ -183,6 +189,88 @@ public class Admin extends User{
 				nvpermit.getNonVisitorPermit("");
 				
 			}
+
+			else if(choice.equalsIgnoreCase("7")) {
+					System.out.println("Enter a citation category 1. Invalid Permit  2. Expired Permit  3. No Permit ");
+					String category = sc.next();
+
+					if (category.equalsIgnoreCase("1") || category.equalsIgnoreCase("2")) {
+						System.out.println("Enter License Number of the vehicle");
+						String licenseNumber = sc.next();
+						String model="";
+						String color="";
+						try{
+							stmt = this.conn.prepareStatement("SELECT * FROM Vehicle "
+									+ "WHERE LicenseNumber = ?"
+							);
+
+							stmt.setString(1, licenseNumber);
+							rs = stmt.executeQuery();
+
+							while (rs.next()) {
+								model = rs.getString("Model");
+								color = rs.getString("Color");
+							}
+
+							String[] var= new Timestamp(new Date().getTime()).toString().split(" ");
+							String startDate = var[0];
+							System.out.println("Enter Lot name vehicle was parked in");
+							String lotName = sc.next();
+							String citationTime = var[1];
+							String violationCategory="";
+							int fee=0;
+							if (category.equalsIgnoreCase("1")) {
+								violationCategory = "1. Invalid Permit";
+								fee = 20;
+							}
+							else if(category.equalsIgnoreCase("2")){
+								violationCategory = "2. Expired Permit";
+								fee = 25;
+							}
+							Date currDate = new Date();
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(currDate);
+							calendar.add(Calendar.DATE, 30);
+							Timestamp time = new Timestamp(calendar.getTime().getTime());
+							String dtime[]=time.toString().split(" ");
+							String dueDate=dtime[0];
+							String paidStatus="UNPAID";
+							Citation citation = new Citation(licenseNumber, model, color, startDate, lotName, citationTime, violationCategory, fee, dueDate, paidStatus, this.conn);
+							citation.IssueCitation();
+
+					}catch(SQLException e) {
+							System.out.println("Failed to get user with the given licenseNumber " + e.getMessage());
+						}
+					}
+					else if (category.equalsIgnoreCase("3")) {
+						System.out.println("Enter License Number of the vehicle");
+						String licenseNumber = sc.next();
+						System.out.println("Enter Model of the vehicle");
+						String model = sc.next();
+						System.out.println("Enter Color of the vehicle");
+						String color = sc.next();
+						String[] var= new Timestamp(new Date().getTime()).toString().split(" ");
+						String startDate = var[0];
+						System.out.println("Enter Lot name vehicle was parked in");
+						String lotName = sc.next();
+						String citationTime = var[1];
+						String violationCategory="3. No Permit";
+						int fee=40;
+						Date currDate = new Date();
+						Calendar calendar = Calendar.getInstance();
+						calendar.setTime(currDate);
+						calendar.add(Calendar.DATE, 30);
+						Timestamp time = new Timestamp(calendar.getTime().getTime());
+						String dtime[]=time.toString().split(" ");
+						String dueDate=dtime[0];
+						String paidStatus="UNPAID";
+						Citation citation = new Citation(licenseNumber, model, color, startDate, lotName, citationTime, violationCategory, fee, dueDate, paidStatus, this.conn);
+						citation.IssueCitation();
+
+
+					}
+			}
+
 			
 			else if(choice.equalsIgnoreCase("5")) {
 				System.out.println("Enter a valid Visitor license plate number");
@@ -205,7 +293,7 @@ public class Admin extends User{
 				String lotParked = sc.next();
 				System.out.println("Enter the zone in which the vehicle has been parked");
 				String zoneParked = sc.next();
-				System.out.println("Enter the space number in which the vehicle is parked");
+				System.out.println("Enter the space type of the space in  which the vehicle is parked");
 				String spaceNumParked = sc.next();
 				
 				NonVisitorPermit nvpermit = new NonVisitorPermit(conn);
