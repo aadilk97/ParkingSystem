@@ -66,6 +66,42 @@ public class Admin extends User{
 			else if(lName.equalsIgnoreCase(lotName) && spaceNumber==sNum) {
 				Timestamp expTime = Timestamp.valueOf(expDate + " " + expTimeStr.toString());
 				if(expTime.getTime()-curtime.getTime()<0) {
+					ResultSet rs1=null;
+					String model="";
+					String color="";
+					try {
+
+						stmt = this.conn.prepareStatement("SELECT * FROM Vehicle "
+								+ "WHERE LicenseNumber = ?"
+						);
+
+						stmt.setString(1, licenseNumber);
+						rs1 = stmt.executeQuery();
+
+						while (rs1.next()) {
+							model = rs1.getString("Model");
+							color = rs1.getString("Color");
+						}
+
+						String[] var = new Timestamp(new Date().getTime()).toString().split(" ");
+						String startDate = var[0];
+						String citationTime = var[1];
+						String violationCategory = "Expired Permit";
+						int fee = 25;
+
+						Date currDate = new Date();
+						Calendar calendar = Calendar.getInstance();
+						calendar.setTime(currDate);
+						calendar.add(Calendar.DATE, 30);
+						Timestamp time1 = new Timestamp(calendar.getTime().getTime());
+						String dtime[] = time1.toString().split(" ");
+						String dueDate = dtime[0];
+						String paidStatus = "UNPAID";
+						Citation citation = new Citation(licenseNumber, model, color, startDate, lotName, citationTime, violationCategory, fee, dueDate, paidStatus, this.conn);
+						citation.IssueCitation();
+					}catch(SQLException e) {
+						System.out.println("Failed to get user with the given licenseNumber " + e.getMessage());
+					}
 					return "Vehicle "+licenseNumber+" has an expired permit";
 				}
 				else {
@@ -73,6 +109,42 @@ public class Admin extends User{
 				}
 			}
 			else {
+				ResultSet rs=null;
+				String model="";
+				String color="";
+				try {
+
+					stmt = this.conn.prepareStatement("SELECT * FROM Vehicle "
+							+ "WHERE LicenseNumber = ?"
+					);
+
+					stmt.setString(1, licenseNumber);
+					rs = stmt.executeQuery();
+
+					while (rs.next()) {
+						model = rs.getString("Model");
+						color = rs.getString("Color");
+					}
+
+					String[] var = new Timestamp(new Date().getTime()).toString().split(" ");
+					String startDate = var[0];
+					String citationTime = var[1];
+					String violationCategory = "Invalid Permit";
+					int fee = 20;
+
+					Date currDate = new Date();
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(currDate);
+					calendar.add(Calendar.DATE, 30);
+					Timestamp time1 = new Timestamp(calendar.getTime().getTime());
+					String dtime[] = time1.toString().split(" ");
+					String dueDate = dtime[0];
+					String paidStatus = "UNPAID";
+					Citation citation = new Citation(licenseNumber, model, color, startDate, lotName, citationTime, violationCategory, fee, dueDate, paidStatus, this.conn);
+					citation.IssueCitation();
+				}catch(SQLException e) {
+					System.out.println("Failed to get user with the given licenseNumber " + e.getMessage());
+				}
 				return "Vehicle "+licenseNumber+" has been parked in an unauthorized zone";
 			}
 		}
@@ -197,92 +269,6 @@ public class Admin extends User{
 				
 			}
 
-			else if(choice.equalsIgnoreCase("7")) {
-					System.out.println("Enter a citation category 1. Invalid Permit  2. Expired Permit  3. No Permit ");
-					String category = sc.next();
-
-					if (category.equalsIgnoreCase("1") || category.equalsIgnoreCase("2")) {
-						System.out.println("Enter License Number of the vehicle");
-						String licenseNumber = sc.next();
-						String model="";
-						String color="";
-						try{
-							stmt = this.conn.prepareStatement("SELECT * FROM Vehicle "
-									+ "WHERE LicenseNumber = ?"
-							);
-
-							stmt.setString(1, licenseNumber);
-							rs = stmt.executeQuery();
-
-							while (rs.next()) {
-								model = rs.getString("Model");
-								color = rs.getString("Color");
-							}
-
-//							String[] var= new Timestamp(new Date().getTime()).toString().split(" ");
-							Timestamp start=new Timestamp(new Date().getTime());
-							String startDate =new SimpleDateFormat("MM/dd/yyyy_hh:mm aa").format(start); 
-							System.out.println("Enter Lot name vehicle was parked in");
-							String lotName = sc.next();
-							String citationTime = startDate.split("_")[1];
-							String violationCategory="";
-							int fee=0;
-							if (category.equalsIgnoreCase("1")) {
-								violationCategory = "1. Invalid Permit";
-								fee = 20;
-							}
-							else if(category.equalsIgnoreCase("2")){
-								violationCategory = "2. Expired Permit";
-								fee = 25;
-							}
-							Date currDate = new Date();
-							Calendar calendar = Calendar.getInstance();
-							calendar.setTime(currDate);
-							calendar.add(Calendar.DATE, 30);
-							Timestamp time = new Timestamp(calendar.getTime().getTime());
-							String duetime =new SimpleDateFormat("MM/dd/yyyy_hh:mm aa").format(time);
-							String dtime[]=duetime.split("_");
-							String dueDate=dtime[0];
-							String paidStatus="UNPAID";
-							Citation citation = new Citation(licenseNumber, model, color, startDate.split("_")[0], lotName, citationTime, violationCategory, fee, dueDate, paidStatus, this.conn);
-							citation.IssueCitation();
-
-					}catch(SQLException e) {
-							System.out.println("Failed to get user with the given licenseNumber " + e.getMessage());
-						}
-					}
-					else if (category.equalsIgnoreCase("3")) {
-						System.out.println("Enter License Number of the vehicle");
-						String licenseNumber = sc.next();
-						System.out.println("Enter Model of the vehicle");
-						String model = sc.next();
-						System.out.println("Enter Color of the vehicle");
-						String color = sc.next();
-//						String[] var= new Timestamp(new Date().getTime()).toString().split(" ");
-//						String startDate = var[0];
-						Timestamp start=new Timestamp(new Date().getTime());
-						String startDate =new SimpleDateFormat("MM/dd/yyyy_hh:mm aa").format(start);
-						System.out.println("Enter Lot name vehicle was parked in");
-						String lotName = sc.next();
-						String citationTime = startDate.split("_")[1];
-						String violationCategory="3. No Permit";
-						int fee=40;
-						Date currDate = new Date();
-						Calendar calendar = Calendar.getInstance();
-						calendar.setTime(currDate);
-						calendar.add(Calendar.DATE, 30);
-						Timestamp time = new Timestamp(calendar.getTime().getTime());
-						String duetime =new SimpleDateFormat("MM/dd/yyyy_hh:mm aa").format(time);
-						String dtime[]=duetime.split("_");
-						String dueDate=dtime[0];
-						String paidStatus="UNPAID";
-						Citation citation = new Citation(licenseNumber, model, color, startDate.split("_")[0], lotName, citationTime, violationCategory, fee, dueDate, paidStatus, this.conn);
-						citation.IssueCitation();
-
-
-					}
-			}
-
 			
 			else if(choice.equalsIgnoreCase("5")) {
 				System.out.println("Enter a valid Visitor license plate number");
@@ -317,7 +303,55 @@ public class Admin extends User{
 					System.out.println("Invalid parking");
 				}
 			}
-			
+			else if(choice.equalsIgnoreCase("7")) {
+				System.out.println("Enter License Number of the vehicle");
+				String licenseNumber = sc.next();
+				label: try {
+					stmt = this.conn.prepareStatement("SELECT * FROM VisitorPermits "
+							+ "WHERE LicenseNumber = ?"
+					);
+
+					stmt.setString(1, licenseNumber);
+					ResultSet vrs = stmt.executeQuery();
+
+					stmt = this.conn.prepareStatement("SELECT * FROM NonVisitorPermits "
+							+ "WHERE LicenseNumber = ?"
+					);
+					stmt.setString(1, licenseNumber);
+					ResultSet nvrs = stmt.executeQuery();
+
+					if (!vrs.next() && !nvrs.next()) {
+						System.out.println("Enter Model of the vehicle");
+						String model = sc.next();
+						System.out.println("Enter Color of the vehicle");
+						String color = sc.next();
+						String[] var = new Timestamp(new Date().getTime()).toString().split(" ");
+						String startDate = var[0];
+						System.out.println("Enter Lot name vehicle was parked in");
+						String lotName = sc.next();
+						String citationTime = var[1];
+						String violationCategory = "No Permit";
+						int fee = 40;
+						Date currDate = new Date();
+						Calendar calendar = Calendar.getInstance();
+						calendar.setTime(currDate);
+						calendar.add(Calendar.DATE, 30);
+						Timestamp time = new Timestamp(calendar.getTime().getTime());
+						String dtime[] = time.toString().split(" ");
+						String dueDate = dtime[0];
+						String paidStatus = "UNPAID";
+						System.out.println("User doesn't have a parking permit and has been issued a citation of 40$");
+						Citation citation = new Citation(licenseNumber, model, color, startDate, lotName, citationTime, violationCategory, fee, dueDate, paidStatus, this.conn);
+						citation.IssueCitation();
+					} else {
+						System.out.println("User has a valid permit");
+						break label;
+					}
+				}catch(SQLException e) {
+					System.out.println("Failed to get user with the given licenseNumber " + e.getMessage());
+				}
+
+			}
 			else if(choice.equalsIgnoreCase("M")) {
 				// Going back to main menu
 				break;

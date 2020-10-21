@@ -189,16 +189,16 @@ public class CreateTables {
 		
 //		createVehicleTable(conn);
 //		createNonVisitorPermitsTable(conn);
-		createVisitorPermitsTable(conn);
-//		createLotsTable(conn);
-//		createUserTable(conn);
-//		createSpacesTable(conn);
-//		createVehicleTable(conn);
-//		createVisitorTable(conn);
-//		createNonVisitorPermitsTable(conn);
 //		createVisitorPermitsTable(conn);
-//		createCitationTable(conn);
-//		createNotificationTable(conn);
+		createLotsTable(conn);
+		createUserTable(conn);
+		createSpacesTable(conn);
+		createVehicleTable(conn);
+		createVisitorTable(conn);
+		createNonVisitorPermitsTable(conn);
+		createVisitorPermitsTable(conn);
+		createCitationTable(conn);
+		createNotificationTable(conn);
 	}
 	
 }

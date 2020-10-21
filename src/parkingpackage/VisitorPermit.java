@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Random;
 
 
@@ -86,7 +87,44 @@ public class VisitorPermit extends Permit{
 			//calculate extra charges if any
 			
 			if(expTime.getTime()-curtime.getTime()<0) {
-				System.out.println("Your permit has expired and you have been charged $25");
+				ResultSet rs1=null;
+				String model="";
+				String color="";
+				try {
+
+					stmt = this.conn.prepareStatement("SELECT * FROM Vehicle "
+							+ "WHERE LicenseNumber = ?"
+					);
+
+					stmt.setString(1, licenseNumber);
+					rs1 = stmt.executeQuery();
+
+					while (rs1.next()) {
+						model = rs1.getString("Model");
+						color = rs1.getString("Color");
+					}
+
+					String[] var = new Timestamp(new java.util.Date().getTime()).toString().split(" ");
+					String startDate = var[0];
+					String citationTime = var[1];
+					String violationCategory = "Expired Permit";
+					int fee = 25;
+
+					Date currDate = (Date) new java.util.Date();
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(currDate);
+					calendar.add(Calendar.DATE, 30);
+					Timestamp time1 = new Timestamp(calendar.getTime().getTime());
+					String dtime[] = time1.toString().split(" ");
+					String dueDate = dtime[0];
+					String paidStatus = "UNPAID";
+					Citation citation = new Citation(licenseNumber, model, color, startDate, lotname, citationTime, violationCategory, fee, dueDate, paidStatus, this.conn);
+					citation.IssueCitation();
+					System.out.println("Your permit has expired and you have been charged $25");
+				}catch(SQLException e) {
+					System.out.println("Failed to get user with the given licenseNumber " + e.getMessage());
+				}
+
 			}
 			
 			PreparedStatement stmt1;
