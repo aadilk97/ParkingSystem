@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Scanner;
 import java.util.Calendar;
 import java.util.Date;
@@ -164,9 +165,10 @@ public class Admin extends User{
 				System.out.println("Enter the license number");
 				String licenseNumber = sc.next();
 				String userType = getUserType(univid);
-				String startDate = new Timestamp(new Date().getTime()).toString().split(" ")[0];
+				Timestamp start=new Timestamp(new Date().getTime());
+				String startDate =new SimpleDateFormat("MM/dd/yyyy_hh:mm aa").format(start); 
 				String expDate = "";
-				String expTime = "23:59:59";
+				String expTime = "11:59 PM";
 				
 				Date currDate = new Date();
 				Calendar calendar = Calendar.getInstance(); 
@@ -182,10 +184,15 @@ public class Admin extends User{
 				}
 				
 				Timestamp time = new Timestamp(calendar.getTime().getTime());
-				String datetime[]=time.toString().split(" ");
+				String t = new SimpleDateFormat("MM/dd/yyyy_hh:mm aa").format(time);
+				String datetime[]=t.split("_");
 				expDate = datetime[0];
 				
-				NonVisitorPermit nvpermit = new NonVisitorPermit(licenseNumber, startDate, expDate, expTime, type, zone, univid, this.conn);
+				System.out.println(expDate);
+				System.out.println(expTime);
+				System.out.println(startDate.split("_")[0]);
+				
+				NonVisitorPermit nvpermit = new NonVisitorPermit(licenseNumber, startDate.split("_")[0], expDate, expTime, type, zone, univid, this.conn);
 				nvpermit.getNonVisitorPermit("");
 				
 			}
@@ -212,11 +219,12 @@ public class Admin extends User{
 								color = rs.getString("Color");
 							}
 
-							String[] var= new Timestamp(new Date().getTime()).toString().split(" ");
-							String startDate = var[0];
+//							String[] var= new Timestamp(new Date().getTime()).toString().split(" ");
+							Timestamp start=new Timestamp(new Date().getTime());
+							String startDate =new SimpleDateFormat("MM/dd/yyyy_hh:mm aa").format(start); 
 							System.out.println("Enter Lot name vehicle was parked in");
 							String lotName = sc.next();
-							String citationTime = var[1];
+							String citationTime = startDate.split("_")[1];
 							String violationCategory="";
 							int fee=0;
 							if (category.equalsIgnoreCase("1")) {
@@ -232,10 +240,11 @@ public class Admin extends User{
 							calendar.setTime(currDate);
 							calendar.add(Calendar.DATE, 30);
 							Timestamp time = new Timestamp(calendar.getTime().getTime());
-							String dtime[]=time.toString().split(" ");
+							String duetime =new SimpleDateFormat("MM/dd/yyyy_hh:mm aa").format(time);
+							String dtime[]=duetime.split("_");
 							String dueDate=dtime[0];
 							String paidStatus="UNPAID";
-							Citation citation = new Citation(licenseNumber, model, color, startDate, lotName, citationTime, violationCategory, fee, dueDate, paidStatus, this.conn);
+							Citation citation = new Citation(licenseNumber, model, color, startDate.split("_")[0], lotName, citationTime, violationCategory, fee, dueDate, paidStatus, this.conn);
 							citation.IssueCitation();
 
 					}catch(SQLException e) {
@@ -249,11 +258,13 @@ public class Admin extends User{
 						String model = sc.next();
 						System.out.println("Enter Color of the vehicle");
 						String color = sc.next();
-						String[] var= new Timestamp(new Date().getTime()).toString().split(" ");
-						String startDate = var[0];
+//						String[] var= new Timestamp(new Date().getTime()).toString().split(" ");
+//						String startDate = var[0];
+						Timestamp start=new Timestamp(new Date().getTime());
+						String startDate =new SimpleDateFormat("MM/dd/yyyy_hh:mm aa").format(start);
 						System.out.println("Enter Lot name vehicle was parked in");
 						String lotName = sc.next();
-						String citationTime = var[1];
+						String citationTime = startDate.split("_")[1];
 						String violationCategory="3. No Permit";
 						int fee=40;
 						Date currDate = new Date();
@@ -261,10 +272,11 @@ public class Admin extends User{
 						calendar.setTime(currDate);
 						calendar.add(Calendar.DATE, 30);
 						Timestamp time = new Timestamp(calendar.getTime().getTime());
-						String dtime[]=time.toString().split(" ");
+						String duetime =new SimpleDateFormat("MM/dd/yyyy_hh:mm aa").format(time);
+						String dtime[]=duetime.split("_");
 						String dueDate=dtime[0];
 						String paidStatus="UNPAID";
-						Citation citation = new Citation(licenseNumber, model, color, startDate, lotName, citationTime, violationCategory, fee, dueDate, paidStatus, this.conn);
+						Citation citation = new Citation(licenseNumber, model, color, startDate.split("_")[0], lotName, citationTime, violationCategory, fee, dueDate, paidStatus, this.conn);
 						citation.IssueCitation();
 
 
