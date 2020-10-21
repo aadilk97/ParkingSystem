@@ -128,6 +128,7 @@ public class CreateTables {
 					+ "SpaceType varchar(20), "
 					+ "LotName varchar(20), "
 					+ "SpaceNumber varchar(20), "
+					+ "Zone varchar(2), "
 					+ "FOREIGN KEY (LicenseNumber) REFERENCES Vehicle(LicenseNumber), "
 					+ "FOREIGN KEY (PhoneNumber) REFERENCES Visitor(PhoneNumber), "
 					+ "PRIMARY KEY (PermitId))" 
@@ -188,7 +189,7 @@ public class CreateTables {
 		
 //		createVehicleTable(conn);
 //		createNonVisitorPermitsTable(conn);
-//		createVisitorPermitsTable(conn);
+		createVisitorPermitsTable(conn);
 //		createLotsTable(conn);
 //		createUserTable(conn);
 //		createSpacesTable(conn);
@@ -196,8 +197,8 @@ public class CreateTables {
 //		createVisitorTable(conn);
 //		createNonVisitorPermitsTable(conn);
 //		createVisitorPermitsTable(conn);
-		createCitationTable(conn);
-		createNotificationTable(conn);
+//		createCitationTable(conn);
+//		createNotificationTable(conn);
 	}
 	
 }

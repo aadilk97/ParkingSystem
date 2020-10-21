@@ -1,6 +1,7 @@
 package parkingpackage;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,8 +34,8 @@ public class VisitorPermit extends Permit{
 		PreparedStatement stmt;
 		try {
 			stmt=this.conn.prepareStatement("INSERT INTO VisitorPermits "
-					+ "(PermitId, PhoneNumber, LicenseNumber, StartDate,ExpirationDate,ExpirationTime,SpaceType,LotName,SpaceNumber) "
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+					+ "(PermitId, PhoneNumber, LicenseNumber, StartDate,ExpirationDate,ExpirationTime,SpaceType,LotName,SpaceNumber,Zone) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			stmt.setString(1, permit_id);
 			stmt.setString(2, phoneNumber);
 			stmt.setString(3, super.licenseNumber);
@@ -44,6 +45,7 @@ public class VisitorPermit extends Permit{
 			stmt.setString(7, super.spaceType);
 			stmt.setString(8, lotname);
 			stmt.setInt(9, spaceNum);
+			stmt.setString(10,"V");
 			stmt.executeUpdate();
 			
 			System.out.println("Visitor Permit Granted Successfully");
