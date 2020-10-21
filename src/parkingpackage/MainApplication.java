@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.Random;
 import java.util.Scanner;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 public class MainApplication {
 	
@@ -141,37 +142,50 @@ public class MainApplication {
 							Space space = new Space(lotname, spaceNumber, "V", spaceType, conn);
 							if (space.isSpaceAvailableVisitor().equals("Yes")) {
 								space.updateAvailable("No");
-								System.out.println("Enter the Entry Time Value as instructed below:");
-								System.out.println("Ente the value of hour between 9-20 inclusive"); //assuming visitors are allowed only from 9am-8pm
-								String hr=sc.next();
-								System.out.println("Enter the value of mins between 00-60 inclusive");
-								String mins=sc.next();
-								
-								//get current date
-								Timestamp time = new Timestamp(new java.util.Date().getTime());
-								String datetime[] = time.toString().split(" ");
-								
-								//today's date + entry time
-								Timestamp time1=Timestamp.valueOf(datetime[0]+" "+hr+":"+mins+":00.000");
-								Timestamp entry_time=time1;
-								System.out.println(entry_time);
-								
-								System.out.println("Enter the permit duration required ranging between 1-4 hours (inclusive)\n");
-								int duration = Integer.parseInt(sc.next());
-								
-								//compute expiration time
-								time1.setTime(time1.getTime()+duration*60*60*1000);
-								
-								String expdt[] = time1.toString().split(" ");
-								System.out.println(expdt[0]);// exp date
-								System.out.println(expdt[1]);// exp time
+								while (true) {
+									System.out.println("Enter the Entry Time Value as instructed below:");
+									System.out.println("Enter the value of hour between 9-20 inclusive (assuming visitor entry is allowed from 9a-8p)"); //assuming visitors are allowed only from 9am-8pm
+									String hr=sc.next();
+									System.out.println("Enter the value of mins between 00-59 inclusive");
+									String mins=sc.next();
+									
+									//get current date
+									Timestamp time = new Timestamp(new java.util.Date().getTime());
+									String t = new SimpleDateFormat("MM/dd/yyyy_hh:mm aa").format(time);
+									String datetime[] = time.toString().split(" ");
+									String format_datetime[]=t.split("_");
+									
+									//today's date + entry time
+									Timestamp time1=Timestamp.valueOf(datetime[0]+" "+hr+":"+mins+":00.000");
+									Timestamp entry_time=time1;
+									String entry=new SimpleDateFormat("MM/dd/yyyy_hh:mm aa").format(entry_time);
+									
+									System.out.println("Your Entry Time is "+ entry);
+									if(entry_time.after(time)) {
+										System.out.println("Enter the permit duration required ranging between 1-4 hours (inclusive)\n");
+										int duration = Integer.parseInt(sc.next());
+										
+										//compute expiration time
+										time1.setTime(time1.getTime()+duration*60*60*1000);
+										String expt = new SimpleDateFormat("MM/dd/yyyy_hh:mm aa").format(time1);
+										
+										String expdt[] = expt.split("_");
+										System.out.println(expdt[0]);// exp date
+										System.out.println(expdt[1]);// exp time
 
-								String startDate = datetime[0];
+										String startDate = datetime[0];
 
-								// pass to visitorpermit class and create visitor permit
-								VisitorPermit vpermit = new VisitorPermit(phoneNumber,licenseNumber, datetime[0], expdt[0],
-										expdt[1], spaceType, lotname, spaceNumber, "V", conn);
-								vpermit.getVisitorPermit();
+										// pass to visitorpermit class and create visitor permit
+										System.out.println(format_datetime[0]);
+										VisitorPermit vpermit = new VisitorPermit(phoneNumber,licenseNumber, format_datetime[0], expdt[0],
+												expdt[1], spaceType, lotname, spaceNumber, "V", conn);
+										vpermit.getVisitorPermit();
+										break;
+									}
+									else {
+										System.out.println("Enter a valid time and try again\n");
+									}
+								}
 								break;
 							} else {
 								System.out.println("Cannot park here, try some other values");
