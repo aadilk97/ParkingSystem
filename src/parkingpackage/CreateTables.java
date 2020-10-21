@@ -172,7 +172,7 @@ public class CreateTables {
 					+ "Fee integer , "
 					+ "DueDate varchar(20), "
 					+ "FOREIGN KEY (CitationNumber) REFERENCES Citation(CitationNumber), "
-					+ "PRIMARY KEY (UserID))"
+					+ "PRIMARY KEY (LicenseNumber))"
 			);
 			System.out.println("Notifications table created successfully");
 		} catch (SQLException e) {

@@ -29,48 +29,41 @@ public class Notification extends Citation {
         this.dueDate = dueDate;
         this.conn = conn;
     }
-
-
-    void AddNotification() throws SQLException {
+    void DeleteNotification( String citationNum) throws SQLException{
         PreparedStatement stmt;
-        stmt=this.conn.prepareStatement("SELECT LicenseNumber FROM NonVisitorPermits ");
-        ArrayList<String> nvarr=new ArrayList<String>();
+        stmt=this.conn.prepareStatement("DELETE FROM Notification "
+                +"WHERE CitationNumber=?");
+        stmt.setString(1,citationNum);
+        stmt.executeUpdate();
+        System.out.println("Notification deleted successfully");
+    }
 
+    void AddNotification() {
+        PreparedStatement stmt;
         ResultSet rs = null;
-        rs = stmt.executeQuery();
-        userID="54545454";
-        while (rs.next()){
-            nvarr.add(rs.getString("LicenseNumber"));
-        }
-        stmt=this.conn.prepareStatement("SELECT LicenseNumber FROM VisitorPermits ");
-        ArrayList<String> varr=new ArrayList<String>();
-        rs = stmt.executeQuery();
-        while (rs.next()){
 
-            varr.add(rs.getString("LicenseNumber"));
-        }
-        if (nvarr.contains(licenseNumber)){
+        try {
             stmt=this.conn.prepareStatement("SELECT * FROM NonVisitorPermits "
-                    +"WHERE LicenseNumber="+licenseNumber);
-            
+                    +"WHERE LicenseNumber=?");
+            stmt.setString(1,licenseNumber);
             rs = stmt.executeQuery();
-            
-            while(rs.next()) {
-            	userID = rs.getString("Univid");
+            //        userID="54545454";
+            if (rs.next()) {
+                userID = rs.getString("Univid");
             }
-        }
-        else if (varr.contains(licenseNumber)){
-            stmt=this.conn.prepareStatement("SELECT * FROM Visitor "
-                    +"WHERE LicenseNumber="+licenseNumber);
-            
-            rs = stmt.executeQuery();
-            
-            while(rs.next()) {
-            	userID = rs.getString("PhoneNumber");
+            else{
+                stmt=this.conn.prepareStatement("SELECT * FROM VisitorPermits "
+                        +"WHERE LicenseNumber="+licenseNumber);
+
+                rs = stmt.executeQuery();
+                if (rs.next()) {
+                    userID = rs.getString("PhoneNumber");
+                }
             }
+        }catch(SQLException e) {
+            System.out.println("License number couldn't be found in Non visitor/Visitor Permit" + e.getMessage());
         }
-        
-        
+
         try {
             stmt=this.conn.prepareStatement("INSERT INTO Notification "
                     + "(UserID, CitationNumber,LicenseNumber, ViolationCategory, CitationDate,Fee,DueDate) "
