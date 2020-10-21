@@ -17,7 +17,7 @@ public class Student extends User {
             System.out.println("You are logged in as student");
             System.out.println("Enter a choice. 1. Pay Citation  M. Main menu");
             String choice = sc.next();
-            if (choice.equalsIgnoreCase("3")) {
+            if (choice.equalsIgnoreCase("1")) {
                 System.out.println("Enter the License Number");
                 String licenseno = sc.next();
                 PreparedStatement stmt;
