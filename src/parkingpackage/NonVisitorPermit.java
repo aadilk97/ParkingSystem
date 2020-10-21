@@ -88,10 +88,10 @@ public class NonVisitorPermit extends Permit {
 		}
 	}
 	
-	public boolean checkNonVisitorPermit(String permitId, String lotParked, String zoneParked, String spaceNumParked, String time) {
+	public boolean checkNonVisitorPermit(String permitId, String lotParked, String zoneParked, String spaceTypeParked, String time) {
 		PreparedStatement stmt;
-		String lot, zone, designation;
-		lot = zone = designation = "";
+		String lot, zone, designation, spaceType;
+		lot = zone = designation = spaceType = "";
 		try {
 			stmt = this.conn.prepareStatement("SELECT * FROM NonvisitorPermits "
 					+ "WHERE PermitId = ?"
@@ -102,6 +102,7 @@ public class NonVisitorPermit extends Permit {
 			
 			while (rs.next()) {
 				zone = rs.getString("Zone");
+				spaceType = rs.getString("SpaceType");
 			}
 			
 			stmt = this.conn.prepareStatement("SELECT * FROM Lots "
@@ -124,7 +125,8 @@ public class NonVisitorPermit extends Permit {
 			
 			// Permit associated with an employee
 			if(zone.length() == 1 && !zone.equalsIgnoreCase("V")) {
-				if(zone.equalsIgnoreCase(zoneParked) || zoneParked.length() == 2) {
+				if((zone.equalsIgnoreCase(zoneParked) || zoneParked.length() == 2) 
+						&& spaceType.equalsIgnoreCase(spaceTypeParked)) {
 					return true;
 				}
 			}
@@ -134,6 +136,10 @@ public class NonVisitorPermit extends Permit {
 				String timeParts[] = time.split(":");
 				int numericTime = Integer.parseInt(timeParts[0]);
 				String meridian = timeParts[1];
+				
+				if(!spaceType.equalsIgnoreCase(spaceTypeParked)) {
+					return false;
+				}
 				
 				if(zoneParked.length() == 2 && zoneParked.equalsIgnoreCase(zone))
 					return true;

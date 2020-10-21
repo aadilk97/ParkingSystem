@@ -140,7 +140,7 @@ public class MainApplication {
 
 							Space space = new Space(lotname, spaceNumber, "V", spaceType, conn);
 							if (space.isSpaceAvailableVisitor().equals("Yes")) {
-//								space.updateAvailable("No");
+								space.updateAvailable("No");
 								System.out.println("Enter the Entry Time Value as instructed below:");
 								System.out.println("Ente the value of hour between 9-20 inclusive"); //assuming visitors are allowed only from 9am-8pm
 								String hr=sc.next();
