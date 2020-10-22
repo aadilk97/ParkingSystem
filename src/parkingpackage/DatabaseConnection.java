@@ -8,7 +8,7 @@ import java.sql.Statement;
 
 public class DatabaseConnection {
 	static final String jdbcURL = "jdbc:oracle:thin:@orca.csc.ncsu.edu:1521:orcl01";
-	private String userName = "akhan23";
+	private String userName = "smitra4";
 	private String password = "abcd1234";
 	
 	public Connection createConnection() {
@@ -25,30 +25,31 @@ public class DatabaseConnection {
 	public boolean testConnection(Connection conn){
 		Statement stmt = null;
 		
-		try {
-			stmt = conn.createStatement();
-			String sql = "SELECT * FROM Test";
-			ResultSet result = stmt.executeQuery(sql);
-			int testId = -1;
-			String testString = "";
-			
-			
-			while(result.next()) {
-				testId = result.getInt("testId");
-				testString = result.getString("testString");	
-				break;
-			}
-			
-			if(testId == 1 && testString.equals("Proteas")) {
-				return true;
-			}
-			return false;
-			
-		} catch(SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
-		
+//		try {
+//			stmt = conn.createStatement();
+//			String sql = "SELECT * FROM Test";
+//			ResultSet result = stmt.executeQuery(sql);
+//			int testId = -1;
+//			String testString = "";
+//
+//
+//			while(result.next()) {
+//				testId = result.getInt("testId");
+//				testString = result.getString("testString");
+//				break;
+//			}
+//
+//			if(testId == 1 && testString.equals("Proteas")) {
+//				return true;
+//			}
+//			return false;
+//
+//		} catch(SQLException e) {
+//			e.printStackTrace();
+//			return false;
+//		}
+//
+		return true;
 	}
 	
 }

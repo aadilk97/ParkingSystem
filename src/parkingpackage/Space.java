@@ -42,7 +42,7 @@ public class Space extends Lots{
 		try {
 			stmt = this.conn.prepareStatement("INSERT INTO Spaces "
 					+ "(SpaceNumber, Zone, Type, Available, Name) "
-					+ "VALUES (?, ?, 'regular', 'Yes', ?)"
+					+ "VALUES (?, ?, 'Regular', 'Yes', ?)"
 				);
 			
 			stmt.setInt(1, spaceNum);

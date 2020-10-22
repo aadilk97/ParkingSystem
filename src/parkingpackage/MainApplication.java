@@ -104,7 +104,8 @@ public class MainApplication {
 						}
 
 						else {
-							studentScreen();
+							Student student = new Student(conn);
+							student.studentScreen();
 						}
 
 					} else {

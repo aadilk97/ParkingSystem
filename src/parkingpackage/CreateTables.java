@@ -81,7 +81,7 @@ public class CreateTables {
 			stmt.execute("CREATE TABLE Visitor( "
 					+ "PhoneNumber varchar(10) NOT NULL,"
 					+ "LicenseNumber varchar(10) NOT NULL, "
-					+ "CONSTRAINT pk_visitor PRIMARY KEY(PhoneNumber, LicenseNumber))"
+					+ "CONSTRAINT pk_visitor PRIMARY KEY(PhoneNumber))"
 				);
 			System.out.println("Visitor table created successfully");
 		} catch(SQLException e) {
@@ -189,14 +189,14 @@ public class CreateTables {
 		
 //		createVehicleTable(conn);
 //		createNonVisitorPermitsTable(conn);
-		createVisitorPermitsTable(conn);
+//		createVisitorPermitsTable(conn);
 //		createLotsTable(conn);
 //		createUserTable(conn);
 //		createSpacesTable(conn);
 //		createVehicleTable(conn);
-//		createVisitorTable(conn);
+		createVisitorTable(conn);
 //		createNonVisitorPermitsTable(conn);
-//		createVisitorPermitsTable(conn);
+		createVisitorPermitsTable(conn);
 //		createCitationTable(conn);
 //		createNotificationTable(conn);
 	}

@@ -6,6 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Random;
 
 
@@ -27,7 +31,23 @@ public class VisitorPermit extends Permit{
 		// TODO Auto-generated constructor stub
 		this.conn=conn;
 	}
-	
+	public String getOgTimeStamp(String expDate, String expTime) {
+		String input=expDate+" "+expTime;
+		DateFormat ip = new SimpleDateFormat("dd/MM/yyyy hh:mm aa");
+		DateFormat op = new SimpleDateFormat( "yyyy-MM-dd hh:mm:ss");
+		java.util.Date date2 = null;
+		try
+		{
+			date2 = ip.parse(input);
+		}
+		catch ( ParseException e )
+		{
+			e.printStackTrace();
+		}
+
+		String newDate = op.format(date2);
+		return newDate;
+	}
 	
 	void getVisitorPermit() {
 		String permit_id=super.getRandomString();
@@ -63,6 +83,7 @@ public class VisitorPermit extends Permit{
 		Timestamp expTime = null;
 		String expTimeStr = "";
 		String expDate = "";
+		String licenseno ="";
 		try {
 			stmt=this.conn.prepareStatement("SELECT * from VisitorPermits "
 					+ "WHERE PermitId=?");
@@ -72,13 +93,14 @@ public class VisitorPermit extends Permit{
 			
 			//get lotname and spaceNumber to update
 			while(result.next()) {
+				licenseno= result.getString("LicenseNumber");
 				lotname=result.getString("LotName");
 				spaceNumber=result.getInt("SpaceNumber");
 				expDate = result.getString("ExpirationDate");
 				expTimeStr=result.getString("ExpirationTime");
 				
 			}
-			expTime = Timestamp.valueOf(expDate + " " + expTimeStr);
+			expTime = Timestamp.valueOf(getOgTimeStamp(expDate, expTimeStr));
 			Space space=new Space(lotname,spaceNumber,conn);
 			space.updateAvailable("Yes");
 			Timestamp curtime = new Timestamp(new java.util.Date().getTime());
@@ -86,7 +108,44 @@ public class VisitorPermit extends Permit{
 			//calculate extra charges if any
 			
 			if(expTime.getTime()-curtime.getTime()<0) {
-				System.out.println("Your permit has expired and you have been charged $25");
+				ResultSet rs1=null;
+				String model="";
+				String color="";
+				try {
+
+					stmt = this.conn.prepareStatement("SELECT * FROM Vehicle "
+							+ "WHERE LicenseNumber = ?"
+					);
+
+					stmt.setString(1, licenseno);
+					rs1 = stmt.executeQuery();
+
+					while (rs1.next()) {
+						model = rs1.getString("Model");
+						color = rs1.getString("Color");
+					}
+
+					String[] var = new Timestamp(new java.util.Date().getTime()).toString().split(" ");
+					String startDate = var[0];
+					String citationTime = var[1];
+					String violationCategory = "Expired Permit";
+					int fee = 25;
+
+					java.util.Date currDate = new java.util.Date();
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(currDate);
+					calendar.add(Calendar.DATE, 30);
+					Timestamp time1 = new Timestamp(calendar.getTime().getTime());
+					String dtime[] = time1.toString().split(" ");
+					String dueDate = dtime[0];
+					String paidStatus = "Unpaid";
+					Citation citation = new Citation(licenseno, model, color, startDate, lotname, citationTime, violationCategory, fee, dueDate, paidStatus, conn);
+					citation.IssueCitation();
+					System.out.println("Your permit has expired and you have been charged $25");
+				}catch(SQLException e) {
+					System.out.println("Failed to get user with the given licenseNumber " + e.getMessage());
+				}
+
 			}
 			
 			PreparedStatement stmt1;

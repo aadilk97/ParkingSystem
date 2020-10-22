@@ -43,7 +43,22 @@ public class Citation {
         this.citationNumber = citationNumber;
     }
 
-
+    void PayCitation(String citationNumber){
+        PreparedStatement stmt;
+        ResultSet rs=null;
+        try{
+            stmt=this.conn.prepareStatement("UPDATE Citation "
+                    + "set PaidStatus =?" +
+                    " WHERE CitationNumber =?");
+            stmt.setString(1,"PAID");
+            stmt.setString(2,citationNumber);
+            stmt.executeUpdate();
+            Notification notify = new Notification(citationNumber, licenseNumber, violationCategory, startDate, fee, dueDate, conn);
+            notify.DeleteNotification(citationNumber);
+        } catch(SQLException e) {
+            System.out.println("Citation couldn't be paid" + e.getMessage());
+        }
+    }
 
 
     void IssueCitation(){
@@ -84,7 +99,7 @@ public class Citation {
 
         String getDateID=startDate.substring(0,2);
 
-        String citation_id=getDateID+lotName;
+        String citation_id=getDateID+"IP";
 
         int remaining=8-citation_id.length();
         StringBuilder sb=new StringBuilder(remaining);
