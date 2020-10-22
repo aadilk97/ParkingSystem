@@ -13,6 +13,7 @@ public class Student extends User {
 
     public void studentScreen() {
         Scanner sc = new Scanner(System.in);
+        sc.useDelimiter("\n");
         while(true) {
             System.out.println("You are logged in as student");
             System.out.println("Enter a choice. 1. Pay Citation  M. Main menu");

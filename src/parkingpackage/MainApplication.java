@@ -390,6 +390,74 @@ public class MainApplication {
 				}
 			}
 
+			else if (role == 11) {
+				PreparedStatement stmt;
+				ResultSet rs = null;
+				try {
+
+					stmt = conn.prepareStatement("SELECT LOTNAME, COUNT(*) AS CITATION_COUNT FROM CITATION WHERE STARTDATE BETWEEN '07/01/2020' and '09/30/2020' GROUP BY LOTNAME");
+					rs = stmt.executeQuery();
+
+					// Need to add "start time" to the table and to the print statement below
+					System.out.println("\n(LotName, # of Citations)");
+					while(rs.next()) {
+						String lotName = rs.getString("LOTNAME");
+						String count = rs.getString("CITATION_COUNT");
+						System.out.println("(" + lotName + ", " + count + ")");
+					}
+					System.out.println();
+					stmt.close();
+
+				} catch(SQLException e) {
+					System.out.println("Query failed to run " + e.getMessage());
+				}
+			}
+
+			else if (role == 12) {
+				PreparedStatement stmt;
+				ResultSet rs = null;
+				try {
+
+					stmt = conn.prepareStatement("SELECT SPACETYPE, COUNT(*) AS PERMIT_COUNT FROM VISITORPERMITS WHERE LOTNAME = 'Justice Lot' AND  STARTDATE BETWEEN '08/12/2020' and '08/20/2020' GROUP BY SPACETYPE");
+					rs = stmt.executeQuery();
+
+					// Need to add "start time" to the table and to the print statement below
+					System.out.println("\n(Permit Type, # of Permits)");
+					while(rs.next()) {
+						String spaceType = rs.getString("SPACETYPE");
+						String count = rs.getString("PERMIT_COUNT");
+						System.out.println("(" + spaceType + ", " + count + ")");
+					}
+					System.out.println();
+					stmt.close();
+
+				} catch(SQLException e) {
+					System.out.println("Query failed to run " + e.getMessage());
+				}
+			}
+
+			else if (role == 13) {
+				PreparedStatement stmt;
+				ResultSet rs = null;
+				try {
+
+					stmt = conn.prepareStatement("SELECT COUNT(UNIVID) AS COUNT FROM NONVISITORPERMITS WHERE ZONE = 'D'");
+					rs = stmt.executeQuery();
+
+					// Need to add "start time" to the table and to the print statement below
+					System.out.println("\n(Count)");
+					while(rs.next()) {
+						String count = rs.getString("COUNT");
+						System.out.println("(" + count + ")");
+					}
+					System.out.println();
+					stmt.close();
+
+				} catch(SQLException e) {
+					System.out.println("Query failed to run " + e.getMessage());
+				}
+			}
+
 			else if (role == 14) {
 				break;
 			}

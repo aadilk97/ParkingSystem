@@ -34,6 +34,7 @@ public class User {
 	
 	public void createUser() {
 		Scanner sc = new Scanner(System.in);
+		sc.useDelimiter("\n");
 		PreparedStatement stmt;
 		try {
 			stmt = this.conn.prepareStatement("INSERT INTO Users "

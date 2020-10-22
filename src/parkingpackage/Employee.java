@@ -133,7 +133,7 @@ public class Employee extends User {
 	
 	public void employeeScreen() {
 		Scanner sc = new Scanner(System.in);
-		
+		sc.useDelimiter("\n");
 		while(true) {
 			System.out.println("Enter a choice. 1. Add vehicle to permit  2. Change vehicle  3. Pay Citation  M. Main menu");
 			String choice = sc.next();
