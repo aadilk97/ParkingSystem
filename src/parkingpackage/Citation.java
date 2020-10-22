@@ -99,7 +99,7 @@ public class Citation {
 
         String getDateID=startDate.substring(0,2);
 
-        String citation_id=getDateID+lotName;
+        String citation_id=getDateID+"IP";
 
         int remaining=8-citation_id.length();
         StringBuilder sb=new StringBuilder(remaining);

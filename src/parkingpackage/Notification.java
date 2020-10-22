@@ -53,15 +53,15 @@ public class Notification extends Citation {
             }
             else{
                 stmt=this.conn.prepareStatement("SELECT * FROM VisitorPermits "
-                        +"WHERE LicenseNumber="+licenseNumber);
-
+                        +"WHERE LicenseNumber=?");
+                stmt.setString(1,licenseNumber);
                 rs = stmt.executeQuery();
                 if (rs.next()) {
                     userID = rs.getString("PhoneNumber");
                 }
             }
         }catch(SQLException e) {
-            System.out.println("License number couldn't be found in Non visitor/Visitor Permit" + e.getMessage());
+            System.out.println("Cannot be notified as user doesn't exits in UPS system " + e.getMessage());
         }
 
         try {
