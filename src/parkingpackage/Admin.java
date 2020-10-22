@@ -101,9 +101,9 @@ public class Admin extends User{
 							color = rs1.getString("Color");
 						}
 
-						String[] var = new Timestamp(new Date().getTime()).toString().split(" ");
-						String startDate = var[0];
-						String citationTime = var[1];
+						Timestamp start=new Timestamp(new Date().getTime());
+						String startDate =new SimpleDateFormat("MM/dd/yyyy_hh:mm aa").format(start);
+						String citationTime = startDate.split("_")[1];
 						String violationCategory = "Expired Permit";
 						int fee = 25;
 
@@ -112,10 +112,11 @@ public class Admin extends User{
 						calendar.setTime(currDate);
 						calendar.add(Calendar.DATE, 30);
 						Timestamp time1 = new Timestamp(calendar.getTime().getTime());
-						String dtime[] = time1.toString().split(" ");
-						String dueDate = dtime[0];
+						String dueDate =new SimpleDateFormat("MM/dd/yyyy_hh:mm aa").format(time1);
+//						String dtime[] = time1.toString().split(" ");
+//						String dueDate = dtime[0];
 						String paidStatus = "Unpaid";
-						Citation citation = new Citation(licenseNumber, model, color, startDate, lotName, citationTime, violationCategory, fee, dueDate, paidStatus, this.conn);
+						Citation citation = new Citation(licenseNumber, model, color, startDate.split("_")[0], lotName, citationTime, violationCategory, fee, dueDate.split("_")[0], paidStatus, this.conn);
 						citation.IssueCitation();
 					}catch(SQLException e) {
 						System.out.println("Failed to get user with the given licenseNumber " + e.getMessage());
@@ -127,7 +128,7 @@ public class Admin extends User{
 				}
 			}
 			else {
-				ResultSet rs=null;
+				ResultSet rs1=null;
 				String model="";
 				String color="";
 				try {
@@ -137,16 +138,16 @@ public class Admin extends User{
 					);
 
 					stmt.setString(1, licenseNumber);
-					rs = stmt.executeQuery();
+					rs1 = stmt.executeQuery();
 
-					while (rs.next()) {
-						model = rs.getString("Model");
-						color = rs.getString("Color");
+					while (rs1.next()) {
+						model = rs1.getString("Model");
+						color = rs1.getString("Color");
 					}
 
-					String[] var = new Timestamp(new Date().getTime()).toString().split(" ");
-					String startDate = var[0];
-					String citationTime = var[1];
+					Timestamp start=new Timestamp(new Date().getTime());
+					String startDate =new SimpleDateFormat("MM/dd/yyyy_hh:mm aa").format(start);
+					String citationTime = startDate.split("_")[1];
 					String violationCategory = "Invalid Permit";
 					int fee = 20;
 
@@ -155,10 +156,11 @@ public class Admin extends User{
 					calendar.setTime(currDate);
 					calendar.add(Calendar.DATE, 30);
 					Timestamp time1 = new Timestamp(calendar.getTime().getTime());
-					String dtime[] = time1.toString().split(" ");
-					String dueDate = dtime[0];
+					String dueDate =new SimpleDateFormat("MM/dd/yyyy_hh:mm aa").format(time1);
+//						String dtime[] = time1.toString().split(" ");
+//						String dueDate = dtime[0];
 					String paidStatus = "Unpaid";
-					Citation citation = new Citation(licenseNumber, model, color, startDate, lotName, citationTime, violationCategory, fee, dueDate, paidStatus, this.conn);
+					Citation citation = new Citation(licenseNumber, model, color, startDate.split("_")[0], lotName, citationTime, violationCategory, fee, dueDate.split("_")[0], paidStatus, this.conn);
 					citation.IssueCitation();
 				}catch(SQLException e) {
 					System.out.println("Failed to get user with the given licenseNumber " + e.getMessage());
@@ -347,23 +349,24 @@ public class Admin extends User{
 							model = rs.getString("Model");
 							color = rs.getString("Color");
 						}
-
-						String[] var = new Timestamp(new Date().getTime()).toString().split(" ");
-						String startDate = var[0];
-						String citationTime = var[1];
-						String violationCategory = "Invalid Permit";
-						int fee = 20;
+						Timestamp start=new Timestamp(new Date().getTime());
+						String startDate =new SimpleDateFormat("MM/dd/yyyy_hh:mm aa").format(start);
+						String citationTime = startDate.split("_")[1];
+						String violationCategory = "Expired Permit";
+						int fee = 25;
 
 						Date currDate = new Date();
 						Calendar calendar = Calendar.getInstance();
 						calendar.setTime(currDate);
 						calendar.add(Calendar.DATE, 30);
 						Timestamp time1 = new Timestamp(calendar.getTime().getTime());
-						String dtime[] = time1.toString().split(" ");
-						String dueDate = dtime[0];
+						String dueDate =new SimpleDateFormat("MM/dd/yyyy_hh:mm aa").format(time1);
+//						String dtime[] = time1.toString().split(" ");
+//						String dueDate = dtime[0];
 						String paidStatus = "Unpaid";
-						Citation citation = new Citation(licenseNumber, model, color, startDate, lotParked, citationTime, violationCategory, fee, dueDate, paidStatus, this.conn);
+						Citation citation = new Citation(licenseNumber, model, color, startDate.split("_")[0], lotParked, citationTime, violationCategory, fee, dueDate.split("_")[0], paidStatus, this.conn);
 						citation.IssueCitation();
+
 					}catch(SQLException e) {
 						System.out.println("Failed to get user with the given licenseNumber " + e.getMessage());
 					}
@@ -393,25 +396,33 @@ public class Admin extends User{
 						String model = sc.next();
 						System.out.println("Enter Color of the vehicle");
 						String color = sc.next();
-						String[] var = new Timestamp(new Date().getTime()).toString().split(" ");
-						String startDate = var[0];
+
 						System.out.println("Enter Lot name vehicle was parked in");
 
 						String lotName = sc1.next();
-						String citationTime = var[1];
+
 						String violationCategory = "No Permit";
 						int fee = 40;
+
+						Timestamp start=new Timestamp(new Date().getTime());
+						String startDate =new SimpleDateFormat("MM/dd/yyyy_hh:mm aa").format(start);
+						String citationTime = startDate.split("_")[1];
+
+
+
 						Date currDate = new Date();
 						Calendar calendar = Calendar.getInstance();
 						calendar.setTime(currDate);
 						calendar.add(Calendar.DATE, 30);
-						Timestamp time = new Timestamp(calendar.getTime().getTime());
-						String dtime[] = time.toString().split(" ");
-						String dueDate = dtime[0];
+						Timestamp time1 = new Timestamp(calendar.getTime().getTime());
+						String dueDate =new SimpleDateFormat("MM/dd/yyyy_hh:mm aa").format(time1);
+//						String dtime[] = time1.toString().split(" ");
+//						String dueDate = dtime[0];
 						String paidStatus = "Unpaid";
-						System.out.println("User doesn't have a parking permit and has been issued a citation of 40$");
-						Citation citation = new Citation(licenseNumber, model, color, startDate, lotName, citationTime, violationCategory, fee, dueDate, paidStatus, this.conn);
+						Citation citation = new Citation(licenseNumber, model, color, startDate.split("_")[0], lotName, citationTime, violationCategory, fee, dueDate.split("_")[0], paidStatus, this.conn);
 						citation.IssueCitation();
+
+
 					} else {
 						System.out.println("User has a valid permit");
 						break label;
