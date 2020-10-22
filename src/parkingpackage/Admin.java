@@ -114,7 +114,7 @@ public class Admin extends User{
 						Timestamp time1 = new Timestamp(calendar.getTime().getTime());
 						String dtime[] = time1.toString().split(" ");
 						String dueDate = dtime[0];
-						String paidStatus = "UNPAID";
+						String paidStatus = "Unpaid";
 						Citation citation = new Citation(licenseNumber, model, color, startDate, lotName, citationTime, violationCategory, fee, dueDate, paidStatus, this.conn);
 						citation.IssueCitation();
 					}catch(SQLException e) {
@@ -157,7 +157,7 @@ public class Admin extends User{
 					Timestamp time1 = new Timestamp(calendar.getTime().getTime());
 					String dtime[] = time1.toString().split(" ");
 					String dueDate = dtime[0];
-					String paidStatus = "UNPAID";
+					String paidStatus = "Unpaid";
 					Citation citation = new Citation(licenseNumber, model, color, startDate, lotName, citationTime, violationCategory, fee, dueDate, paidStatus, this.conn);
 					citation.IssueCitation();
 				}catch(SQLException e) {
@@ -243,12 +243,12 @@ public class Admin extends User{
 				String univid = sc.next();
 				System.out.println("Enter the zone");
 				String zone = sc.next();
-				String type = "regular";
-				System.out.println("Do you want to request a specific type. Enter Yes to do so");
+				String type = "Regular";
+				System.out.println("Do you want to request a specific type. Enter Yes or No");
 				String typeChoice = sc.next();
 				
 				if(typeChoice.equalsIgnoreCase("Yes")) {
-					System.out.println("Enter the type");
+					System.out.println("Enter any of the following type: Regular, Handicapped, Electric");
 					type = sc.next();
 				}
 				
@@ -360,7 +360,7 @@ public class Admin extends User{
 						Timestamp time1 = new Timestamp(calendar.getTime().getTime());
 						String dtime[] = time1.toString().split(" ");
 						String dueDate = dtime[0];
-						String paidStatus = "UNPAID";
+						String paidStatus = "Unpaid";
 						Citation citation = new Citation(licenseNumber, model, color, startDate, lotParked, citationTime, violationCategory, fee, dueDate, paidStatus, this.conn);
 						citation.IssueCitation();
 					}catch(SQLException e) {
@@ -407,7 +407,7 @@ public class Admin extends User{
 						Timestamp time = new Timestamp(calendar.getTime().getTime());
 						String dtime[] = time.toString().split(" ");
 						String dueDate = dtime[0];
-						String paidStatus = "UNPAID";
+						String paidStatus = "Unpaid";
 						System.out.println("User doesn't have a parking permit and has been issued a citation of 40$");
 						Citation citation = new Citation(licenseNumber, model, color, startDate, lotName, citationTime, violationCategory, fee, dueDate, paidStatus, this.conn);
 						citation.IssueCitation();

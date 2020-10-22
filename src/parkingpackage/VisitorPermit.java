@@ -138,7 +138,7 @@ public class VisitorPermit extends Permit{
 					Timestamp time1 = new Timestamp(calendar.getTime().getTime());
 					String dtime[] = time1.toString().split(" ");
 					String dueDate = dtime[0];
-					String paidStatus = "UNPAID";
+					String paidStatus = "Unpaid";
 					Citation citation = new Citation(licenseno, model, color, startDate, lotname, citationTime, violationCategory, fee, dueDate, paidStatus, conn);
 					citation.IssueCitation();
 					System.out.println("Your permit has expired and you have been charged $25");

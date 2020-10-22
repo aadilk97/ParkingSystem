@@ -165,7 +165,7 @@ public class Employee extends User {
 							+ "WHERE LicenseNumber =? "
 							+ "AND PaidStatus=?");
 					stmt.setString(1, licenseno);
-					stmt.setString(2,"UNPAID");
+					stmt.setString(2,"Unpaid");
 					rs = stmt.executeQuery();
 					if (!rs.next()) {
 						System.out.println("There is no fee charged!!!");

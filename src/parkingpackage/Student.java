@@ -22,12 +22,13 @@ public class Student extends User {
                 String licenseno = sc.next();
                 PreparedStatement stmt;
                 ResultSet rs = null;
+
                 try {
                     stmt = this.conn.prepareStatement("SELECT * FROM Citation "
                             + "WHERE LicenseNumber =? "
                             + "AND PaidStatus=?");
                     stmt.setString(1, licenseno);
-                    stmt.setString(2,"UNPAID");
+                    stmt.setString(2,"Unpaid");
                     rs = stmt.executeQuery();
                     if (!rs.next()) {
                         System.out.println("There is no fee charged!!!");
