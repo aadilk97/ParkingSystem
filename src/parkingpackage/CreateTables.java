@@ -175,7 +175,7 @@ public class CreateTables {
 					+ "Fee integer , "
 					+ "DueDate varchar(20), "
 					+ "FOREIGN KEY (CitationNumber) REFERENCES Citation(CitationNumber), "
-					+ "PRIMARY KEY (UserID))"
+					+ "PRIMARY KEY (LicenseNumber))"
 			);
 			System.out.println("Notifications table created successfully");
 		} catch (SQLException e) {
@@ -186,19 +186,16 @@ public class CreateTables {
 	public static void main(String args[]) {
 		DatabaseConnection dbConnection = new DatabaseConnection();
 		Connection conn = dbConnection.createConnection();
-		
-//		createVehicleTable(conn);
-//		createNonVisitorPermitsTable(conn);
-//		createVisitorPermitsTable(conn);
-//		createLotsTable(conn);
-//		createUserTable(conn);
-//		createSpacesTable(conn);
-//		createVehicleTable(conn);
+
+		createLotsTable(conn);
+		createUserTable(conn);
+		createSpacesTable(conn);
+		createVehicleTable(conn);
 		createVisitorTable(conn);
-//		createNonVisitorPermitsTable(conn);
+		createNonVisitorPermitsTable(conn);
 		createVisitorPermitsTable(conn);
-//		createCitationTable(conn);
-//		createNotificationTable(conn);
+		createCitationTable(conn);
+		createNotificationTable(conn);
 	}
 	
 }

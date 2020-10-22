@@ -175,6 +175,7 @@ public class Admin extends User{
 	public void adminScreen() {
 
 		Scanner sc = new Scanner(System.in);
+		sc.useDelimiter("\n");
 		PreparedStatement stmt;
 		ResultSet rs = null;
 		while (true) {
