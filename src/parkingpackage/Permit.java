@@ -30,7 +30,7 @@ public class Permit {
 	    final String NUMS = "0123456789";
 	    final String DATA_FOR_RANDOM_STRING = LOWER + UPPER + NUMS;
 	    
-	    String getDateID=startDate.substring(0,2);
+	    String getDateID=startDate.split("/")[2].substring(0,2);
 	    
 	    String permit_id=getDateID+zone;
 	    

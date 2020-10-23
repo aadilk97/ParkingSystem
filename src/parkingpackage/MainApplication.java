@@ -200,7 +200,7 @@ public class MainApplication {
 
 										// pass to visitorpermit class and create visitor permit
 										System.out.println(format_datetime[0]);
-										VisitorPermit vpermit = new VisitorPermit(phoneNumber,licenseNumber, format_datetime[0],format_datetime[1], expdt[0],
+										VisitorPermit vpermit = new VisitorPermit(phoneNumber,licenseNumber, format_datetime[0],entry.split("_")[1], expdt[0],
 												expdt[1], duration, spaceType, lotname, spaceNumber, "V", conn);
 										vpermit.getVisitorPermit();
 										break;
