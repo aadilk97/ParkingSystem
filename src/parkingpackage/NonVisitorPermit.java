@@ -8,8 +8,8 @@ import java.util.Arrays;
 public class NonVisitorPermit extends Permit {
 	String univid;
 	Connection conn;
-	NonVisitorPermit(String licenseNumber, String startDate, String expirationDate, String expirationTime, String spaceType, String zone, String univid, Connection conn){
-		super(licenseNumber, startDate, expirationDate, expirationTime, spaceType, zone, conn);
+	NonVisitorPermit(String licenseNumber, String startDate, String startTime, String expirationDate, String expirationTime, String spaceType, String zone, String univid, Connection conn){
+		super(licenseNumber, startDate, startTime, expirationDate, expirationTime, spaceType, zone, conn);
 		this.univid = univid;
 		this.conn = conn;
 	}
@@ -63,21 +63,22 @@ public class NonVisitorPermit extends Permit {
 		PreparedStatement stmt;
 		try {
 			stmt=this.conn.prepareStatement("INSERT INTO NonvisitorPermits "
-					+ "(PermitId,Univid,LicenseNumber,StartDate,ExpirationDate,ExpirationTime,"
+					+ "(PermitId,Univid,LicenseNumber,StartDate,startTime,ExpirationDate,ExpirationTime,"
 					+ "SpaceType,Zone,Manufacturer,Model,Color,Year) "
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			stmt.setString(1, permit_id);
 			stmt.setString(2, this.univid);
 			stmt.setString(3, super.licenseNumber);
 			stmt.setString(4, super.startDate);
-			stmt.setString(5, super.expirationDate);
-			stmt.setString(6, super.expirationTime);
-			stmt.setString(7, super.spaceType);
-			stmt.setString(8, super.zone);
-			stmt.setString(9, manufacturer);
-			stmt.setString(10, model);
-			stmt.setString(11, color);
-			stmt.setString(12, year);
+			stmt.setString(5, super.startTime);
+			stmt.setString(6, super.expirationDate);
+			stmt.setString(7, super.expirationTime);
+			stmt.setString(8, super.spaceType);
+			stmt.setString(9, super.zone);
+			stmt.setString(10, manufacturer);
+			stmt.setString(11, model);
+			stmt.setString(12, color);
+			stmt.setString(13, year);
 			
 			stmt.executeUpdate();
 			

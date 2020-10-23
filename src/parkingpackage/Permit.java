@@ -4,17 +4,19 @@ import java.util.Random;
 public class Permit {
 	String licenseNumber;
 	String startDate;
+	String startTime;
 	String expirationDate;
 	String expirationTime;
 	String spaceType;
 	Connection conn;
 	String zone;
 	
-	Permit(String licenseNumber, String startDate, String expirationDate, String expirationTime, String spaceType, String zone, Connection conn) {
+	Permit(String licenseNumber, String startDate, String startTime, String expirationDate, String expirationTime, String spaceType, String zone, Connection conn) {
 		this.licenseNumber = licenseNumber;
 		this.startDate = startDate;
 		this.expirationDate = expirationDate;
 		this.spaceType = spaceType;
+		this.startTime=startTime;
 		this.expirationTime = expirationTime;
 		this.zone=zone;
 		this.conn=conn;

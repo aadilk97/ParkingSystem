@@ -285,7 +285,7 @@ public class Admin extends User{
 				System.out.println(expTime);
 				System.out.println(startDate.split("_")[0]);
 				
-				NonVisitorPermit nvpermit = new NonVisitorPermit(licenseNumber, startDate.split("_")[0], expDate, expTime, type, zone, univid, this.conn);
+				NonVisitorPermit nvpermit = new NonVisitorPermit(licenseNumber, startDate.split("_")[0],"12:00 AM", expDate, expTime, type, zone, univid, this.conn);
 				nvpermit.getNonVisitorPermit("");
 				
 			}

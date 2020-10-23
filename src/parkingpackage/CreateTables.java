@@ -97,6 +97,7 @@ public class CreateTables {
 					+ "Univid varchar(10) NOT NULL, "
 					+ "LicenseNumber varchar(10) NOT NULL, "
 					+ "StartDate varchar(15), "
+					+ "StartTime varchar(15), "
 					+ "ExpirationDate varchar(15), "
 					+ "ExpirationTime varchar(15), "
 					+ "SpaceType varchar(20), "
@@ -123,8 +124,10 @@ public class CreateTables {
 					+ "PhoneNumber varchar(10) NOT NULL, "
 					+ "LicenseNumber varchar(10) NOT NULL, "
 					+ "StartDate varchar(15), "
+					+ "StartTime varchar(15), "
 					+ "ExpirationDate varchar(15), "
 					+ "ExpirationTime varchar(15), "
+					+ "Duration varchar(5), "
 					+ "SpaceType varchar(20), "
 					+ "LotName varchar(20), "
 					+ "SpaceNumber varchar(20), "
@@ -187,15 +190,15 @@ public class CreateTables {
 		DatabaseConnection dbConnection = new DatabaseConnection();
 		Connection conn = dbConnection.createConnection();
 
-		createLotsTable(conn);
-		createUserTable(conn);
-		createSpacesTable(conn);
-		createVehicleTable(conn);
-		createVisitorTable(conn);
+//		createLotsTable(conn);
+//		createUserTable(conn);
+//		createSpacesTable(conn);
+//		createVehicleTable(conn);
+//		createVisitorTable(conn);
 		createNonVisitorPermitsTable(conn);
-		createVisitorPermitsTable(conn);
-		createCitationTable(conn);
-		createNotificationTable(conn);
+//		createVisitorPermitsTable(conn);
+//		createCitationTable(conn);
+//		createNotificationTable(conn);
 	}
 	
 }
