@@ -13,8 +13,8 @@ public class Employee extends User {
 	
 	public void addToNonVisitorPermits(String permitId, String licenseNumber, String univid) {
 		PreparedStatement stmt;
-		String startDate, expDate, expTime, zone, type;
-		startDate = expDate = expTime = type = zone = "";
+		String startDate, expDate, expTime, zone, type, startTime;
+		startDate = expDate = expTime = type = zone = startTime="";
 		ResultSet rs = null;
 		
 		try {
@@ -26,13 +26,14 @@ public class Employee extends User {
 			rs = stmt.executeQuery();
 			while (rs.next()) {
 				startDate = rs.getString("StartDate");
+				startTime=rs.getString("StartTime");
 				expDate = rs.getString("ExpirationDate");
 				expTime = rs.getString("ExpirationTime");
 				zone = rs.getString("Zone");
 				type = rs.getString("SpaceType");
 			}
 			
-			NonVisitorPermit nvpermit = new NonVisitorPermit(licenseNumber, startDate, expDate, expTime, type, zone, univid, this.conn);
+			NonVisitorPermit nvpermit = new NonVisitorPermit(licenseNumber, startDate, startTime, expDate, expTime, type, zone, univid, this.conn);
 			nvpermit.getNonVisitorPermit(permitId);
 			
 		} catch (SQLException e) {

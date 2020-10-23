@@ -18,12 +18,14 @@ public class VisitorPermit extends Permit{
 	int spaceNum;
 	Connection conn;
 	String phoneNumber;
+	int duration;
 	
-	VisitorPermit(String phoneNumber,String licenseNumber, String startDate, String expirationDate, String expirationTime,String spaceType, String lotname, int spaceNum, String zone, Connection conn ) {
-		super(licenseNumber, startDate, expirationDate, expirationTime, spaceType, zone, conn);
+	VisitorPermit(String phoneNumber,String licenseNumber, String startDate, String startTime, String expirationDate, String expirationTime,int duration,String spaceType, String lotname, int spaceNum, String zone, Connection conn ) {
+		super(licenseNumber, startDate, startTime, expirationDate, expirationTime, spaceType, zone, conn);
 		this.lotname=lotname;
 		this.spaceNum=spaceNum;
 		this.phoneNumber=phoneNumber;
+		this.duration=duration;
 		this.conn=conn;
 	}
 	
@@ -54,18 +56,20 @@ public class VisitorPermit extends Permit{
 		PreparedStatement stmt;
 		try {
 			stmt=this.conn.prepareStatement("INSERT INTO VisitorPermits "
-					+ "(PermitId, PhoneNumber, LicenseNumber, StartDate,ExpirationDate,ExpirationTime,SpaceType,LotName,SpaceNumber,Zone) "
-					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+					+ "(PermitId, PhoneNumber, LicenseNumber, StartDate,StartTime,ExpirationDate,ExpirationTime,Duration,SpaceType,LotName,SpaceNumber,Zone) "
+					+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			stmt.setString(1, permit_id);
 			stmt.setString(2, phoneNumber);
 			stmt.setString(3, super.licenseNumber);
 			stmt.setString(4, super.startDate);
-			stmt.setString(5, super.expirationDate);
-			stmt.setString(6, super.expirationTime);
-			stmt.setString(7, super.spaceType);
-			stmt.setString(8, lotname);
-			stmt.setInt(9, spaceNum);
-			stmt.setString(10,"V");
+			stmt.setString(5, super.startTime);
+			stmt.setString(6, super.expirationDate);
+			stmt.setString(7, super.expirationTime);
+			stmt.setString(8, String.valueOf(duration) + " h");
+			stmt.setString(9, super.spaceType);
+			stmt.setString(10, lotname);
+			stmt.setInt(11, spaceNum);
+			stmt.setString(12,"V");
 			stmt.executeUpdate();
 			
 			System.out.println("Visitor Permit Granted Successfully");
