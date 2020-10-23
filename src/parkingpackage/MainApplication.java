@@ -240,7 +240,6 @@ public class MainApplication {
 					stmt = conn.prepareStatement("SELECT L.NAME, L.DESIGNATION FROM LOTS L");
 					rs = stmt.executeQuery();
 
-
 					System.out.println("\n(Lot Name, Zone Designation)");
 					while(rs.next()) {
 						String lotName = rs.getString("NAME");
@@ -263,7 +262,6 @@ public class MainApplication {
 					stmt = conn.prepareStatement("SELECT * FROM NONVISITORPERMITS WHERE UNIVID = '1006020'");
 					rs = stmt.executeQuery();
 
-					// Need to add "start time" to the table and to the print statement below
 					System.out.println("\n(PermitID, Univ ID, License#, StartDate, ExpirationDate, ExpirationTime, SpaceType, Zone, Manufacturer, Model, Color, Year)");
 					while(rs.next()) {
 						String permitID = rs.getString("PERMITID");
@@ -296,7 +294,6 @@ public class MainApplication {
 					stmt = conn.prepareStatement("SELECT * FROM VEHICLE WHERE LICENSENUMBER IN (SELECT LICENSENUMBER FROM NONVISITORPERMITS WHERE UNIVID = '1006003')");
 					rs = stmt.executeQuery();
 
-					// Need to add "start time" to the table and to the print statement below
 					System.out.println("\n(License#, Manufacturer, Model, Color, Year)");
 					while(rs.next()) {
 						String licenseNo = rs.getString("LICENSENUMBER");
@@ -322,7 +319,6 @@ public class MainApplication {
 					stmt = conn.prepareStatement("SELECT SPACENUMBER FROM SPACES WHERE NAME = 'Justice Lot' AND ZONE = 'V' AND TYPE = 'Electric' AND AVAILABLE = 'Yes'");
 					rs = stmt.executeQuery();
 
-					// Need to add "start time" to the table and to the print statement below
 					System.out.println("\n(Space#)");
 					while(rs.next()) {
 						String spaceNo = rs.getString("SPACENUMBER");
@@ -344,7 +340,6 @@ public class MainApplication {
 					stmt = conn.prepareStatement("SELECT * FROM CITATION WHERE PAIDSTATUS = 'Unpaid'");
 					rs = stmt.executeQuery();
 
-					// Need to add "start time" to the table and to the print statement below
 					System.out.println("\n(Citation#, License#, Model, Color, StartDate, LotName, CitationTime, ViolationCategory, Fee, DueDate, PaidStatus)");
 					while(rs.next()) {
 						String citationNo = rs.getString("CITATIONNUMBER");
@@ -376,7 +371,7 @@ public class MainApplication {
 					stmt = conn.prepareStatement("SELECT COUNT(UNIVID) AS COUNT FROM NONVISITORPERMITS WHERE ZONE = 'D'");
 					rs = stmt.executeQuery();
 
-					// Need to add "start time" to the table and to the print statement below
+
 					System.out.println("\n(Count)");
 					while(rs.next()) {
 						String count = rs.getString("COUNT");
@@ -398,7 +393,7 @@ public class MainApplication {
 					stmt = conn.prepareStatement("SELECT LOTNAME, COUNT(*) AS CITATION_COUNT FROM CITATION WHERE STARTDATE BETWEEN '07/01/2020' and '09/30/2020' GROUP BY LOTNAME");
 					rs = stmt.executeQuery();
 
-					// Need to add "start time" to the table and to the print statement below
+
 					System.out.println("\n(LotName, # of Citations)");
 					while(rs.next()) {
 						String lotName = rs.getString("LOTNAME");
@@ -421,7 +416,7 @@ public class MainApplication {
 					stmt = conn.prepareStatement("SELECT SPACETYPE, COUNT(*) AS PERMIT_COUNT FROM VISITORPERMITS WHERE LOTNAME = 'Justice Lot' AND  STARTDATE BETWEEN '08/12/2020' and '08/20/2020' GROUP BY SPACETYPE");
 					rs = stmt.executeQuery();
 
-					// Need to add "start time" to the table and to the print statement below
+
 					System.out.println("\n(Permit Type, # of Permits)");
 					while(rs.next()) {
 						String spaceType = rs.getString("SPACETYPE");
@@ -441,14 +436,14 @@ public class MainApplication {
 				ResultSet rs = null;
 				try {
 
-					stmt = conn.prepareStatement("SELECT COUNT(UNIVID) AS COUNT FROM NONVISITORPERMITS WHERE ZONE = 'D'");
+					stmt = conn.prepareStatement("SELECT V.ZONE, SUM(C.FEE) FROM CITATION C, VISITORPERMITS V WHERE C.STARTDATE BETWEEN '08/1/2020' AND '08/31/2020' GROUP BY V.zone");
 					rs = stmt.executeQuery();
 
-					// Need to add "start time" to the table and to the print statement below
-					System.out.println("\n(Count)");
+					System.out.println("\n(Zone, Total Fee)");
 					while(rs.next()) {
-						String count = rs.getString("COUNT");
-						System.out.println("(" + count + ")");
+						String zone = rs.getString("ZONE");
+						String fee = rs.getString("SUM(C.FEE)");
+						System.out.println("(" + zone + ", " + fee + ")");
 					}
 					System.out.println();
 					stmt.close();
