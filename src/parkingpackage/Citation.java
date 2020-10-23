@@ -92,25 +92,46 @@ public class Citation {
     }
 
     public String getRandomCitation() {
-        final String LOWER = "abcdefghijklmnopqrstuvwxyz";
-        final String UPPER = LOWER.toUpperCase();
-        final String NUMS = "0123456789";
-        final String DATA_FOR_RANDOM_STRING = LOWER + UPPER + NUMS;
+//        final String LOWER = "abcdefghijklmnopqrstuvwxyz";
+//        final String UPPER = LOWER.toUpperCase();
+//        final String NUMS = "0123456789";
+//        final String DATA_FOR_RANDOM_STRING = LOWER + UPPER + NUMS;
+//
+//        String getDateID=startDate.substring(0,2);
+//
+//        String citation_id=getDateID+"IP";
+//
+//        int remaining=8-citation_id.length();
+//        StringBuilder sb=new StringBuilder(remaining);
+//        for(int i=0;i<remaining;i++) {
+//            Random rand=new Random();
+//            int randomIndex=rand.nextInt(DATA_FOR_RANDOM_STRING.length());
+//            char randChr=DATA_FOR_RANDOM_STRING.charAt(randomIndex);
+//            sb.append(randChr);
+//        }
+//
+////	    System.out.println(permit_id+sb.toString());
+//        return citation_id + sb.toString();
+    	String initial= "10000";
+        PreparedStatement stmt;
+        ResultSet rs=null;
+        try {
+            stmt = this.conn.prepareStatement("select CITATIONNUMBER from CITATION where ROWNUM=1 order by CITATIONNUMBER desc");
+            rs= stmt.executeQuery();
+            if (!rs.next()){
+                return initial;
+            }
+            else{
+                initial=rs.getString("CitationNumber");
+                int initialint=Integer.parseInt(initial);
 
-        String getDateID=startDate.substring(0,2);
+                initialint=initialint+1;
 
-        String citation_id=getDateID+"IP";
-
-        int remaining=8-citation_id.length();
-        StringBuilder sb=new StringBuilder(remaining);
-        for(int i=0;i<remaining;i++) {
-            Random rand=new Random();
-            int randomIndex=rand.nextInt(DATA_FOR_RANDOM_STRING.length());
-            char randChr=DATA_FOR_RANDOM_STRING.charAt(randomIndex);
-            sb.append(randChr);
+                return String.valueOf(initialint);
+            }
+        }catch(SQLException e) {
+            System.out.println("Issue with querying to citation table " + e.getMessage());
         }
-
-//	    System.out.println(permit_id+sb.toString());
-        return citation_id + sb.toString();
+        return initial;
     }
 }
